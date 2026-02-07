@@ -1,10 +1,10 @@
-# Upload Commands for carconnectivity-webui-by-m7xlab v1.0.6
+# Upload Commands for carconnectivity-webui-by-m7xlab v1.0.7
 # ================================================================
 
-# CHANGES IN v1.0.6:
-# - Added debug logging to show static files path
-# - Added existence check for static directory
-# - Will help diagnose why static files aren't being served
+# CRITICAL FIX IN v1.0.7:
+# - Fixed static file serving to work in production (DEBUG=False)
+# - Changed from static() helper to direct serve view
+# - Static files now work regardless of DEBUG setting
 
 cd "/Users/gediminas.kristopaitis/Documents/Private & Shared/CarConnectivityPlus/CarConnectivity-plugin-webui"
 
@@ -17,31 +17,35 @@ python3 -m twine check dist/*
 python3 -m twine upload dist/* --config-file .pypirc
 
 # ================================================================
-# After upload, install and check logs:
+# After upload, install and test:
 # ================================================================
 
 pip uninstall -y carconnectivity-webui-by-m7xlab
 pip install --no-cache-dir carconnectivity-webui-by-m7xlab
 
-# Restart application and look for these log lines:
-# "Django static path: /path/to/static"
-# "Static path exists: True/False"
-# "STATICFILES_DIRS configured: [...]"
-
-# This will help us understand where Django is looking for static files
-# and whether they exist in the installed package.
+# Restart application
 
 # ================================================================
-# MANUAL CHECK (run in deployment environment):
+# WHAT WAS THE PROBLEM:
 # ================================================================
-
-# Check where the package is installed:
-python3 -c "import carconnectivity_plugins.webui.django_app as app; import os; print('Package location:', os.path.dirname(app.__file__))"
-
-# Check if static directory exists:
-python3 -c "import carconnectivity_plugins.webui.django_app as app; import os; static_dir = os.path.join(os.path.dirname(app.__file__), 'static'); print(f'Static dir: {static_dir}'); print(f'Exists: {os.path.exists(static_dir)}'); print(f'Contents: {os.listdir(static_dir) if os.path.exists(static_dir) else \"N/A\"}')"
-
-# List static files:
-python3 -c "import carconnectivity_plugins.webui.django_app as app; import os; static_dir = os.path.join(os.path.dirname(app.__file__), 'static'); [print(os.path.join(root, f)) for root, dirs, files in os.walk(static_dir) for f in files] if os.path.exists(static_dir) else print('Static dir not found')"
-
+# The diagnostic commands showed:
+# - Static files ARE in the package ✓
+# - Static directory exists ✓
+# - Django settings are correct ✓
+# 
+# BUT: Django's static() helper only serves files when DEBUG=True
+# Since DEBUG=False in production, static files returned 404.
+#
+# FIX: Changed urls.py to use django.views.static.serve directly
+# with an explicit URL pattern. This works regardless of DEBUG setting.
+#
+# ================================================================
+# EXPECTED RESULTS:
+# ================================================================
+# After v1.0.7:
+# - GET /static/css/apple-design-system.css → 200 OK ✓
+# - GET /static/js/main.js → 200 OK ✓
+# - GET /static/icons/*.svg → 200 OK ✓
+# - Login page shows Apple-inspired design ✓
+#
 # ================================================================

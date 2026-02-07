@@ -7,13 +7,27 @@ from pathlib import Path
 # Build paths inside the project
 BASE_DIR = Path(__file__).resolve().parent
 
+# Import plugin config getter
+from carconnectivity_plugins.webui.django_app import get_plugin_config
+
+# Get plugin configuration
+plugin_config = get_plugin_config()
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', uuid.uuid4().hex)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
+DEBUG = plugin_config.get('debug', False) if plugin_config else os.environ.get('DJANGO_DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['*']  # Will be restricted by plugin configuration
+# Allowed hosts from plugin config
+ALLOWED_HOSTS = plugin_config.get('allowed_hosts', ['*']) if plugin_config else ['*']
+
+# CSRF trusted origins from plugin config
+CSRF_TRUSTED_ORIGINS = plugin_config.get('csrf_trusted_origins', []) if plugin_config else []
+
+# Session and CSRF cookie security
+SESSION_COOKIE_SECURE = plugin_config.get('session_cookie_secure', False) if plugin_config else False
+CSRF_COOKIE_SECURE = plugin_config.get('csrf_cookie_secure', False) if plugin_config else False
 
 # Application definition
 INSTALLED_APPS = [
