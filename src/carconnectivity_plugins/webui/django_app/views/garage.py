@@ -146,13 +146,42 @@ def vehicle_img(request: HttpRequest, vin: str) -> HttpResponse:
     vehicle.images.images['car_picture'].value.save(img_io, 'PNG')
     img_io.seek(0)
     
-    # Check if JSON format requested
-    if request.path.endswith('.json'):
-        json_map = {
-            'type': 'image/png',
-            'encoding': 'base64',
-            'data': b64encode(img_io.read()).decode()
-        }
-        return JsonResponse(json_map)
-    
     return FileResponse(img_io, content_type='image/png')
+
+
+@require_http_methods(["GET"])
+def vehicle_img_json(request: HttpRequest, vin: str) -> JsonResponse:
+    """Return vehicle image as JSON with base64 encoding."""
+    car_connectivity = get_car_connectivity()
+    if not car_connectivity:
+        raise Http404("CarConnectivity instance not connected")
+    
+    vehicle = car_connectivity.garage.get_vehicle(vin)
+    if not vehicle:
+        raise Http404(f"Vehicle with VIN {vin} not found")
+    
+    if not SUPPORT_IMAGES:
+        raise Http404("PIL module not available, cannot serve vehicle images")
+    
+    # Check if vehicle has car picture
+    if ('car_picture' not in vehicle.images.images or 
+        not vehicle.images.images['car_picture'].enabled or 
+        vehicle.images.images['car_picture'].value is None):
+        # Return fallback info in JSON
+        fallback = request.GET.get('fallback', 'icons/vehicle.png')
+        return JsonResponse({
+            'type': 'fallback',
+            'url': f'/static/{fallback}'
+        })
+    
+    # Serve image as JSON
+    img_io = io.BytesIO()
+    vehicle.images.images['car_picture'].value.save(img_io, 'PNG')
+    img_io.seek(0)
+    
+    json_map = {
+        'type': 'image/png',
+        'encoding': 'base64',
+        'data': b64encode(img_io.read()).decode()
+    }
+    return JsonResponse(json_map)

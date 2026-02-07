@@ -17,6 +17,7 @@ urlpatterns = [
         path('<str:vin>/', garage.vehicle_view, name='vehicle'),
         path('<str:vin>/json', garage.vehicle_json, name='vehicle_json'),
         path('<str:vin>-car.png', garage.vehicle_img, name='vehicle_img'),
+        path('<str:vin>-car.png.json/', garage.vehicle_img_json, name='vehicle_img_json'),
     ])),
     
     # Connectors
