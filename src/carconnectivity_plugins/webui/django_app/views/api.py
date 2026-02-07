@@ -37,11 +37,15 @@ def log_view(request: HttpRequest) -> HttpResponse:
     
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     order = request.GET.get('order', 'desc')  # desc = latest first, asc = oldest first
+    storage = car_connectivity.log_storage.storage or []
+    # Django template slice filter does not support ::-1, so reverse in the view
+    log_entries = list(storage)[::-1] if order == 'desc' else list(storage)
     
     return render(request, 'log.html', {
         'car_connectivity': car_connectivity,
         'formatter': formatter,
-        'log_order': order
+        'log_order': order,
+        'log_entries': log_entries,
     })
 
 

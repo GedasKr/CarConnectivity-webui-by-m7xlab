@@ -7,19 +7,19 @@
 {% block content %}
 <div class="card">
     <div class="card-body">
-        {% if car_connectivity.log_storage.storage %}
+        {% if log_entries %}
         <div style="margin-bottom: var(--space-md); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm);">
             <span style="color: var(--color-text-secondary); font-size: var(--font-size-sm);">
-                Last {{ car_connectivity.log_storage.storage|length }} log entries
+                Last {{ log_entries|length }} log entries (CarConnectivity process only)
             </span>
-            <div style="display: flex; gap: var(--space-xs);">
+            <div style="display: flex; align-items: center; gap: var(--space-sm);">
+                <span style="color: var(--color-text-tertiary); font-size: var(--font-size-xs);">Sort:</span>
                 <a href="?order=desc" class="btn btn-sm {% if log_order == 'desc' %}btn-primary{% else %}btn-outline{% endif %}" style="padding: 4px 12px; font-size: 13px;">Latest first</a>
                 <a href="?order=asc" class="btn btn-sm {% if log_order == 'asc' %}btn-primary{% else %}btn-outline{% endif %}" style="padding: 4px 12px; font-size: 13px;">Oldest first</a>
             </div>
         </div>
-        <pre style="background: var(--color-surface-elevated); padding: var(--space-lg); border-radius: var(--border-radius-md); overflow-x: auto; max-height: 600px; font-family: 'SF Mono', Monaco, 'Courier New', monospace; font-size: 13px; line-height: 1.5;">{% if log_order == 'asc' %}{% for record in car_connectivity.log_storage.storage %}{{ record|format_log_record:formatter|ansi2html|safe }}
-{% endfor %}{% else %}{% for record in car_connectivity.log_storage.storage|slice:"::-1" %}{{ record|format_log_record:formatter|ansi2html|safe }}
-{% endfor %}{% endif %}</pre>
+        <pre style="background: var(--color-surface-elevated); padding: var(--space-lg); border-radius: var(--border-radius-md); overflow-x: auto; max-height: 600px; font-family: 'SF Mono', Monaco, 'Courier New', monospace; font-size: 13px; line-height: 1.5;">{% for record in log_entries %}{{ record|format_log_record:formatter|ansi2html|safe }}
+{% endfor %}</pre>
         {% else %}
         <div style="text-align: center; padding: var(--space-3xl); color: var(--color-text-tertiary);">
             <svg style="width: 64px; height: 64px; margin-bottom: var(--space-md); opacity: 0.5;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">

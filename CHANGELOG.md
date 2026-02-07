@@ -5,7 +5,17 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 - No unreleased changes so far
 
-## [1.1.0] - 2026-02-07
+## [1.1.2] - 2026-02-07
+### Added
+- Grafana link in navbar (points to `/grafana/` for nginx routing)
+
+### Fixed
+- Log page sort order: "Latest first" / "Oldest first" now work correctly (ordering applied in view; Django template slice does not support reverse)
+
+### Changed
+- Log page: clarified "CarConnectivity process only" and sort labels; README Logs section added (how logs are sourced, order parameter, no cross-container logs)
+
+## [1.1.1] - 2026-02-07
 ### Changed
 - Refactored web application from Flask to Django
 - Improved web UI styling: garage vehicle cards, metric alignment, and icon consistency
@@ -90,7 +100,9 @@ Note: This plugin is required for compatibility with CarConnectivity version 0.1
 ## [0.1] - 2025-02-19
 Initial release, let's go and give this to the public to try out...
 
-[unreleased]: https://github.com/tillsteinbach/CarConnectivity-plugin-webui/compare/v1.1.0...HEAD
+[unreleased]: https://github.com/tillsteinbach/CarConnectivity-plugin-webui/compare/v1.1.2...HEAD
+[1.1.2]: https://github.com/tillsteinbach/CarConnectivity-plugin-webui/releases/tag/v1.1.2
+[1.1.1]: https://github.com/tillsteinbach/CarConnectivity-plugin-webui/releases/tag/v1.1.1
 [1.1.0]: https://github.com/tillsteinbach/CarConnectivity-plugin-webui/releases/tag/v1.1.0
 [0.7.1]: https://github.com/tillsteinbach/CarConnectivity-plugin-webui/releases/tag/v0.7.1
 [0.7]: https://github.com/tillsteinbach/CarConnectivity-plugin-webui/releases/tag/v0.7

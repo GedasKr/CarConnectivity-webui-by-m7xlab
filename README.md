@@ -92,3 +92,13 @@ pip3 install carconnectivity-webui-by-m7xlab --upgrade
 - ♿ **Accessible**: WCAG 2.1 AA compliant
 - 🎭 **Smooth Animations**: 60fps transitions and micro-interactions
 - 🎯 **Modern Icons**: Heroicons SVG icon library
+
+## Logs
+
+The **Log** page shows the **system log** of the CarConnectivity process that runs this WebUI.
+
+- **Source**: Logs are not read from files or other services. The [CarConnectivity](https://github.com/tillsteinbach/CarConnectivity) core attaches an in-memory handler to Python’s `logging` module and appends `LogRecord` objects to a ring buffer. The WebUI reads that buffer and formats each record with a standard formatter (`%(asctime)s - %(name)s - %(levelname)s - %(message)s`). So you see **only logs from this process** (CarConnectivity + connectors + plugins in the same runtime).
+- **Order**: The `?order=` query controls sort order on the log page:
+  - `order=desc` (default): **Latest first** — most recent entries at the top.
+  - `order=asc`: **Oldest first** — chronological order from the start of the buffer.
+- **Other containers**: Logs from **other containers** (e.g. a separate database container, Grafana, or nginx) are **not** available here. To see those, use the container’s own logging (e.g. `docker logs`, Kubernetes logs, or Grafana’s log datasources).

@@ -62,6 +62,7 @@ def navbar(request: HttpRequest) -> Dict[str, Any]:
             "url": reverse('plugins_status')
         },
         {"text": "Log", "url": reverse('log')},
+        {"text": "Grafana", "url": "/grafana/"},
     ]
     
     return {'navbar': nav}
