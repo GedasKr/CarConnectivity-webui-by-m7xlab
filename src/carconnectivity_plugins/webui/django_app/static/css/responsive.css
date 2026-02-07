@@ -88,10 +88,6 @@
     margin-bottom: var(--space-md);
   }
   
-  .vehicle-card {
-    width: 100%;
-  }
-  
   .col-1, .col-2, .col-3, .col-4, .col-6, .col-8, .col-12 {
     flex: 0 0 100%;
     max-width: 100%;
@@ -170,11 +166,6 @@
   .col-md-8 { flex: 0 0 66.666667%; max-width: 66.666667%; }
   .col-md-12 { flex: 0 0 100%; max-width: 100%; }
   
-  /* Tablet Cards */
-  .vehicle-card {
-    width: calc(50% - var(--space-md));
-  }
-  
   /* Tablet Typography */
   h1 {
     font-size: 36px;
@@ -202,11 +193,6 @@
   .col-lg-6 { flex: 0 0 50%; max-width: 50%; }
   .col-lg-8 { flex: 0 0 66.666667%; max-width: 66.666667%; }
   .col-lg-12 { flex: 0 0 100%; max-width: 100%; }
-  
-  /* Desktop Cards */
-  .vehicle-card {
-    width: calc(33.333% - var(--space-md));
-  }
   
   /* Desktop Typography */
   h1 {
@@ -236,11 +222,6 @@
   .col-xl-6 { flex: 0 0 50%; max-width: 50%; }
   .col-xl-8 { flex: 0 0 66.666667%; max-width: 66.666667%; }
   .col-xl-12 { flex: 0 0 100%; max-width: 100%; }
-  
-  /* Large Desktop Cards */
-  .vehicle-card {
-    width: calc(25% - var(--space-md));
-  }
   
   /* Large Desktop Typography */
   h1 {

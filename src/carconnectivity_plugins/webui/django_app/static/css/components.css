@@ -90,6 +90,11 @@
   transform: translateY(-10px);
   transition: all var(--transition-speed) var(--transition-timing);
   z-index: 1000;
+  list-style: none;
+}
+
+.dropdown-menu li {
+  list-style: none;
 }
 
 .dropdown:hover .dropdown-menu,
@@ -377,27 +382,57 @@
 
 .nav-tabs {
   display: flex;
-  border-bottom: 1px solid var(--color-divider);
+  flex-flow: row;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+  height: 50px;
+  border-bottom: none;
   margin-bottom: var(--space-lg);
-  gap: var(--space-sm);
+  list-style: none;
+  padding: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  text-align: left;
+  vertical-align: bottom;
+  color: rgba(29, 29, 31, 0.01);
+}
+
+.nav-tabs .nav-item {
+  list-style: none;
+  flex-shrink: 0;
 }
 
 .nav-tabs .nav-link {
-  padding: var(--space-md) var(--space-lg);
-  border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0;
-  border-bottom: 2px solid transparent;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--color-divider);
   transition: all var(--transition-speed) var(--transition-timing);
+  white-space: nowrap;
+  display: block;
+  text-decoration: none;
+  background: var(--color-surface);
+  margin-right: var(--space-xs);
 }
 
 .nav-tabs .nav-link:hover {
-  border-bottom-color: var(--color-primary);
-  background: transparent;
+  background: var(--color-surface-elevated);
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
 }
 
 .nav-tabs .nav-link.active {
-  border-bottom-color: var(--color-primary);
-  color: var(--color-primary);
-  background: transparent;
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+  font-weight: var(--font-weight-semibold);
+  box-shadow: var(--shadow-md);
+}
+
+/* Extra spacing when tabs are inside card-header (below image/map) */
+.card-header .nav-tabs {
+  margin-top: var(--space-xl);
 }
 
 .tab-content {
@@ -435,6 +470,7 @@ footer {
   box-shadow: var(--shadow-md);
   transition: all var(--transition-speed) var(--transition-timing);
   cursor: pointer;
+  min-width: 250px;
 }
 
 .vehicle-card:hover {
@@ -444,7 +480,7 @@ footer {
 
 .vehicle-card-image {
   width: 100%;
-  height: 300px;
+  height: 200px;
   object-fit: contain;
   background: var(--color-surface-elevated);
   padding: var(--space-md);
@@ -464,6 +500,44 @@ footer {
   color: var(--color-text-secondary);
   font-size: var(--font-size-sm);
   margin-bottom: var(--space-sm);
+}
+
+/* Unified metric row: icon + label + value, same style and size */
+.vehicle-card-metric {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: var(--space-sm);
+  font-size: var(--font-size-sm);
+}
+
+/* Fixed icon column so Battery, Range, Odometer labels and values align */
+.vehicle-card-metric > div:first-child {
+  width: 28px;
+  min-width: 28px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vehicle-card-metric-label {
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+  min-width: 72px;
+}
+
+.vehicle-card-metric-value {
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-sm);
+}
+
+/* Model Year: one neutral style (not a statistic) */
+.vehicle-card-metric--info .vehicle-card-metric-label,
+.vehicle-card-metric--info .vehicle-card-metric-value {
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-normal);
 }
 
 /* ============================================
@@ -500,4 +574,241 @@ footer {
   height: 300px;
   width: 100%;
   overflow: hidden;
+}
+
+/* ============================================
+   Animated Battery Icon
+   ============================================ */
+
+.battery-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.battery-body {
+  width: 24px;
+  height: 12px;
+  border: 2px solid var(--color-text-secondary);
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+  background: var(--color-surface-elevated);
+}
+
+.battery-level {
+  height: 100%;
+  background: linear-gradient(90deg, #34c759, #30d158);
+  transition: width 0.5s ease;
+  animation: batteryPulse 2s ease-in-out infinite;
+}
+
+.battery-container[data-level="100"] .battery-level,
+.battery-container[data-level="99"] .battery-level,
+.battery-container[data-level="98"] .battery-level,
+.battery-container[data-level="97"] .battery-level,
+.battery-container[data-level="96"] .battery-level,
+.battery-container[data-level="95"] .battery-level,
+.battery-container[data-level="94"] .battery-level,
+.battery-container[data-level="93"] .battery-level,
+.battery-container[data-level="92"] .battery-level,
+.battery-container[data-level="91"] .battery-level,
+.battery-container[data-level="90"] .battery-level {
+  background: linear-gradient(90deg, #34c759, #30d158);
+}
+
+.battery-container[data-level="89"] .battery-level,
+.battery-container[data-level="88"] .battery-level,
+.battery-container[data-level="87"] .battery-level,
+.battery-container[data-level="86"] .battery-level,
+.battery-container[data-level="85"] .battery-level,
+.battery-container[data-level="84"] .battery-level,
+.battery-container[data-level="83"] .battery-level,
+.battery-container[data-level="82"] .battery-level,
+.battery-container[data-level="81"] .battery-level,
+.battery-container[data-level="80"] .battery-level,
+.battery-container[data-level="79"] .battery-level,
+.battery-container[data-level="78"] .battery-level,
+.battery-container[data-level="77"] .battery-level,
+.battery-container[data-level="76"] .battery-level,
+.battery-container[data-level="75"] .battery-level,
+.battery-container[data-level="74"] .battery-level,
+.battery-container[data-level="73"] .battery-level,
+.battery-container[data-level="72"] .battery-level,
+.battery-container[data-level="71"] .battery-level,
+.battery-container[data-level="70"] .battery-level,
+.battery-container[data-level="69"] .battery-level,
+.battery-container[data-level="68"] .battery-level,
+.battery-container[data-level="67"] .battery-level,
+.battery-container[data-level="66"] .battery-level,
+.battery-container[data-level="65"] .battery-level,
+.battery-container[data-level="64"] .battery-level,
+.battery-container[data-level="63"] .battery-level,
+.battery-container[data-level="62"] .battery-level,
+.battery-container[data-level="61"] .battery-level,
+.battery-container[data-level="60"] .battery-level,
+.battery-container[data-level="59"] .battery-level,
+.battery-container[data-level="58"] .battery-level,
+.battery-container[data-level="57"] .battery-level,
+.battery-container[data-level="56"] .battery-level,
+.battery-container[data-level="55"] .battery-level,
+.battery-container[data-level="54"] .battery-level,
+.battery-container[data-level="53"] .battery-level,
+.battery-container[data-level="52"] .battery-level,
+.battery-container[data-level="51"] .battery-level,
+.battery-container[data-level="50"] .battery-level {
+  background: linear-gradient(90deg, #ffd60a, #ffc107);
+}
+
+.battery-container[data-level="49"] .battery-level,
+.battery-container[data-level="48"] .battery-level,
+.battery-container[data-level="47"] .battery-level,
+.battery-container[data-level="46"] .battery-level,
+.battery-container[data-level="45"] .battery-level,
+.battery-container[data-level="44"] .battery-level,
+.battery-container[data-level="43"] .battery-level,
+.battery-container[data-level="42"] .battery-level,
+.battery-container[data-level="41"] .battery-level,
+.battery-container[data-level="40"] .battery-level,
+.battery-container[data-level="39"] .battery-level,
+.battery-container[data-level="38"] .battery-level,
+.battery-container[data-level="37"] .battery-level,
+.battery-container[data-level="36"] .battery-level,
+.battery-container[data-level="35"] .battery-level,
+.battery-container[data-level="34"] .battery-level,
+.battery-container[data-level="33"] .battery-level,
+.battery-container[data-level="32"] .battery-level,
+.battery-container[data-level="31"] .battery-level,
+.battery-container[data-level="30"] .battery-level,
+.battery-container[data-level="29"] .battery-level,
+.battery-container[data-level="28"] .battery-level,
+.battery-container[data-level="27"] .battery-level,
+.battery-container[data-level="26"] .battery-level,
+.battery-container[data-level="25"] .battery-level,
+.battery-container[data-level="24"] .battery-level,
+.battery-container[data-level="23"] .battery-level,
+.battery-container[data-level="22"] .battery-level,
+.battery-container[data-level="21"] .battery-level,
+.battery-container[data-level="20"] .battery-level {
+  background: linear-gradient(90deg, #ff9500, #ff8c00);
+}
+
+.battery-container[data-level="19"] .battery-level,
+.battery-container[data-level="18"] .battery-level,
+.battery-container[data-level="17"] .battery-level,
+.battery-container[data-level="16"] .battery-level,
+.battery-container[data-level="15"] .battery-level,
+.battery-container[data-level="14"] .battery-level,
+.battery-container[data-level="13"] .battery-level,
+.battery-container[data-level="12"] .battery-level,
+.battery-container[data-level="11"] .battery-level,
+.battery-container[data-level="10"] .battery-level,
+.battery-container[data-level="9"] .battery-level,
+.battery-container[data-level="8"] .battery-level,
+.battery-container[data-level="7"] .battery-level,
+.battery-container[data-level="6"] .battery-level,
+.battery-container[data-level="5"] .battery-level,
+.battery-container[data-level="4"] .battery-level,
+.battery-container[data-level="3"] .battery-level,
+.battery-container[data-level="2"] .battery-level,
+.battery-container[data-level="1"] .battery-level,
+.battery-container[data-level="0"] .battery-level {
+  background: linear-gradient(90deg, #ff3b30, #ff453a);
+  animation: batteryLowPulse 1s ease-in-out infinite;
+}
+
+.battery-tip {
+  width: 3px;
+  height: 6px;
+  background: var(--color-text-secondary);
+  border-radius: 0 2px 2px 0;
+}
+
+@keyframes batteryPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes batteryLowPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Range Icon - witty-skunk-89 style (uiverse.io) */
+.range-icon.loader-shape-3 {
+  position: relative;
+  display: inline-flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.range-icon.loader-shape-3::before,
+.range-icon.loader-shape-3::after {
+  position: absolute;
+  content: "";
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.range-icon.loader-shape-3::after {
+  width: 12px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-success);
+  opacity: 0.35;
+  top: 55%;
+}
+
+.range-icon.loader-shape-3::before {
+  width: 12px;
+  height: 12px;
+  border-radius: 50% 50% 50% 0;
+  transform: translateX(-50%) rotate(-45deg);
+  background: transparent;
+  box-shadow: 0 0 0 2px var(--color-success);
+  animation: range-drop-move 1.2s ease-in-out infinite;
+  top: 35%;
+}
+
+@keyframes range-drop-move {
+  0%, 100% {
+    top: 35%;
+  }
+  50% {
+    top: 28%;
+  }
+}
+
+/* Speedometer Icon */
+.speedometer {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.speedometer svg {
+  animation: speedometerPulse 3s ease-in-out infinite;
+}
+
+@keyframes speedometerPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
 }

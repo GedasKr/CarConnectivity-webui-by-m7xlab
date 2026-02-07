@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load carconnectivity_filters %}
 
 {% block title %}{{ connector.id }} Configuration{% endblock %}
 {% block header %}{{ connector.id }} Configuration{% endblock %}
@@ -6,7 +7,34 @@
 {% block content %}
 <div class="card">
     <div class="card-body">
-        <pre style="background: var(--color-surface-elevated); padding: var(--space-lg); border-radius: var(--border-radius-md); overflow-x: auto;">{{ connector.active_config }}</pre>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Setting</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for key, value in connector.active_config.items %}
+                <tr>
+                    <td>{{ key }}</td>
+                    <td>
+                        {% if 'password' in key|lower or 'secret' in key|lower or 'token' in key|lower %}
+                            <span style="color: #ff0000; font-weight: bold;">********</span>
+                        {% elif value == True %}
+                            <span class="badge badge-success">Enabled</span>
+                        {% elif value == False %}
+                            <span class="badge" style="background: #999; color: white;">Disabled</span>
+                        {% elif value is None %}
+                            <span style="color: var(--color-text-tertiary); font-style: italic;">Not set</span>
+                        {% else %}
+                            <span style="font-family: 'SF Mono', Monaco, monospace;">{{ value }}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
 {% endblock %}

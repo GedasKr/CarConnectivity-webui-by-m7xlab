@@ -173,7 +173,8 @@
       const isoTime = element.textContent.trim();
       try {
         const date = new Date(isoTime);
-        element.textContent = date.toLocaleString();
+        const options = { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+        element.textContent = 'Updated ' + date.toLocaleString(undefined, options);
       } catch (e) {
         console.error('Failed to parse time:', isoTime);
       }

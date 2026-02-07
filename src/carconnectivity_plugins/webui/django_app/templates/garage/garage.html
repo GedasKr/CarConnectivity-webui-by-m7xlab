@@ -16,40 +16,69 @@
                          alt="{{ vehicle.name.value|default:vehicle.id }}"
                          loading="lazy">
                     <div class="vehicle-card-body">
-                        <h3 class="vehicle-card-title">
-                            {% if vehicle.name.enabled %}
-                                {{ vehicle.name.value }}
-                            {% else %}
-                                {{ vehicle.id }}
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-sm);">
+                            <h3 class="vehicle-card-title" style="margin: 0;">
+                                {% if vehicle.name.enabled %}
+                                    {{ vehicle.name.value }}
+                                {% else %}
+                                    {{ vehicle.id }}
+                                {% endif %}
+                            </h3>
+                            {% if vehicle.name.enabled and vehicle.name.last_updated %}
+                                <span style="font-size: var(--font-size-xs); color: var(--color-text-tertiary);" class="js-convert-time">{{ vehicle.name.last_updated|date:"c" }}</span>
                             {% endif %}
-                        </h3>
+                        </div>
                         
-                        <div class="vehicle-card-info">
-                            {% if vehicle.model.enabled %}
-                                {{ vehicle.model|format_cc_element:""|safe }}
+                        <div class="vehicle-card-metric vehicle-card-metric--info">
+                            {% if vehicle.model_year.enabled %}
+                                <span class="vehicle-card-metric-label">Model Year</span>
+                                <span class="vehicle-card-metric-value">{{ vehicle.model_year.value }}</span>
                             {% endif %}
                         </div>
                         
                         {% if vehicle.drives.enabled and vehicle.drives.drives %}
-                            <div class="vehicle-card-info">
-                                <img src="{% static 'icons/battery.svg' %}" alt="Battery" style="width: 16px; height: 16px; display: inline; margin-right: 4px;">
-                                Level: 
+                            <div class="vehicle-card-metric">
+                                <div class="battery-icon">
+                                    {% for drive in vehicle.drives.drives.values %}
+                                        {% if drive.level.enabled %}
+                                            <div class="battery-container" data-level="{{ drive.level.value }}">
+                                                <div class="battery-body">
+                                                    <div class="battery-level" style="width: {{ drive.level.value }}%;"></div>
+                                                </div>
+                                                <div class="battery-tip"></div>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                                <span class="vehicle-card-metric-label">Battery:</span>
                                 {% for drive in vehicle.drives.drives.values %}
-                                    {{ drive.level|format_cc_element:""|safe }}{% if not forloop.last %}, {% endif %}
+                                    <span class="vehicle-card-metric-value">{{ drive.level|format_cc_element:""|safe }}</span>{% if not forloop.last %}, {% endif %}
                                 {% endfor %}
                             </div>
                         {% endif %}
                         
                         {% if vehicle.drives.total_range.enabled %}
-                            <div class="vehicle-card-info">
-                                <img src="{% static 'icons/location.svg' %}" alt="Range" style="width: 16px; height: 16px; display: inline; margin-right: 4px;">
-                                {{ vehicle.drives.total_range|format_cc_element:"Range"|safe }}
+                            <div class="vehicle-card-metric">
+                                <div class="range-icon loader-shape-3"></div>
+                                <span class="vehicle-card-metric-label">Range:</span>
+                                <span class="vehicle-card-metric-value">{{ vehicle.drives.total_range|format_cc_element:""|safe }}</span>
                             </div>
                         {% endif %}
                         
                         {% if vehicle.odometer.enabled %}
-                            <div class="vehicle-card-info">
-                                Odometer: {{ vehicle.odometer|format_cc_element:""|safe }}
+                            <div class="vehicle-card-metric">
+                                <div class="speedometer">
+                                    <svg width="20" height="20" viewBox="0 0 100 100">
+                                        <circle cx="50" cy="50" r="45" fill="none" stroke="var(--color-divider)" stroke-width="8" opacity="0.3"/>
+                                        <circle cx="50" cy="50" r="45" fill="none" stroke="var(--color-primary)" stroke-width="8" 
+                                                stroke-dasharray="283" stroke-dashoffset="70" stroke-linecap="round" 
+                                                transform="rotate(-90 50 50)"/>
+                                        <circle cx="50" cy="50" r="5" fill="var(--color-primary)"/>
+                                        <line x1="50" y1="50" x2="75" y2="35" stroke="var(--color-primary)" stroke-width="3" stroke-linecap="round"/>
+                                    </svg>
+                                </div>
+                                <span class="vehicle-card-metric-label">Odometer:</span>
+                                <span class="vehicle-card-metric-value">{{ vehicle.odometer|format_cc_element:""|safe }}</span>
                             </div>
                         {% endif %}
                         

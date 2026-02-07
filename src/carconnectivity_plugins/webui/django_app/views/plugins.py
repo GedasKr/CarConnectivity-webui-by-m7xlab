@@ -1,6 +1,7 @@
 """Plugin views for CarConnectivity WebUI."""
 from __future__ import annotations
 from typing import TYPE_CHECKING
+import logging
 from django.shortcuts import render
 from django.http import Http404
 from django.views.decorators.http import require_http_methods
@@ -50,7 +51,9 @@ def log_view(request: HttpRequest, plugin_id: str) -> HttpResponse:
         raise Http404(f"Plugin {plugin_id} not found")
     
     plugin = car_connectivity.plugins.plugins[plugin_id]
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     
     return render(request, 'plugins/log.html', {
-        'plugin': plugin
+        'plugin': plugin,
+        'formatter': formatter
     })

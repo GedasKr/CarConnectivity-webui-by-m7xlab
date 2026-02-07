@@ -29,14 +29,10 @@ def navbar(request: HttpRequest) -> Dict[str, Any]:
         connectors_sublinks.append({"divider": True})
         
         for connector in car_connectivity.connectors.connectors.values():
-            connector_nav = {
+            connectors_sublinks.append({
                 "text": connector.id,
-                "sublinks": [
-                    {"text": "Config", "url": reverse('connector_config', args=[connector.id])},
-                    {"text": "Log", "url": reverse('connector_log', args=[connector.id])},
-                ]
-            }
-            connectors_sublinks.append(connector_nav)
+                "url": reverse('connector_config', args=[connector.id])
+            })
     
     # Build plugins navigation
     if car_connectivity and car_connectivity.plugins and car_connectivity.plugins.enabled:
@@ -47,14 +43,10 @@ def navbar(request: HttpRequest) -> Dict[str, Any]:
         plugins_sublinks.append({"divider": True})
         
         for plugin in car_connectivity.plugins.plugins.values():
-            plugin_nav = {
+            plugins_sublinks.append({
                 "text": plugin.id,
-                "sublinks": [
-                    {"text": "Config", "url": reverse('plugin_config', args=[plugin.id])},
-                    {"text": "Log", "url": reverse('plugin_log', args=[plugin.id])},
-                ]
-            }
-            plugins_sublinks.append(plugin_nav)
+                "url": reverse('plugin_config', args=[plugin.id])
+            })
     
     # Build main navigation
     nav = [

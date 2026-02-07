@@ -28,7 +28,7 @@
         </div>
         
         <!-- Tabs -->
-        <ul class="nav-tabs" style="margin-top: var(--space-lg);">
+        <ul class="nav-tabs">
             <li class="nav-item">
                 <a class="nav-link active" data-bs-toggle="tab" href="#vehicle">Vehicle</a>
             </li>
@@ -132,6 +132,29 @@
         </div>
         {% endif %}
         
+        {% if vehicle.software.enabled %}
+        <div class="tab-pane" id="software">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Attribute</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for child in vehicle.software.children %}
+                        {% if child.enabled and child.id != "commands" %}
+                        <tr>
+                            <td>{{ child.id }}</td>
+                            <td>{{ child|format_cc_element:""|safe }}</td>
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+        
         {% if vehicle.drives.enabled %}
         <div class="tab-pane" id="drives">
             <table class="table">
@@ -143,6 +166,144 @@
                 </thead>
                 <tbody>
                     {% for child in vehicle.drives.children %}
+                        {% if child.enabled and child.id != "commands" %}
+                        <tr>
+                            <td>{{ child.id }}</td>
+                            <td>{{ child|format_cc_element:""|safe }}</td>
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+        
+        {% if vehicle.doors.enabled %}
+        <div class="tab-pane" id="doors">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Attribute</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for child in vehicle.doors.children %}
+                        {% if child.enabled and child.id != "commands" %}
+                        <tr>
+                            <td>{{ child.id }}</td>
+                            <td>{{ child|format_cc_element:""|safe }}</td>
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+        
+        {% if vehicle.windows.enabled %}
+        <div class="tab-pane" id="windows">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Attribute</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for child in vehicle.windows.children %}
+                        {% if child.enabled and child.id != "commands" %}
+                        <tr>
+                            <td>{{ child.id }}</td>
+                            <td>{{ child|format_cc_element:""|safe }}</td>
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+        
+        {% if vehicle.lights.enabled %}
+        <div class="tab-pane" id="lights">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Attribute</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for child in vehicle.lights.children %}
+                        {% if child.enabled and child.id != "commands" %}
+                        <tr>
+                            <td>{{ child.id }}</td>
+                            <td>{{ child|format_cc_element:""|safe }}</td>
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+        
+        {% if vehicle.charging.enabled %}
+        <div class="tab-pane" id="charging">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Attribute</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for child in vehicle.charging.children %}
+                        {% if child.enabled and child.id != "commands" %}
+                        <tr>
+                            <td>{{ child.id }}</td>
+                            <td>{{ child|format_cc_element:""|safe }}</td>
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+        
+        {% if vehicle.climatization.enabled %}
+        <div class="tab-pane" id="climatization">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Attribute</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for child in vehicle.climatization.children %}
+                        {% if child.enabled and child.id != "commands" %}
+                        <tr>
+                            <td>{{ child.id }}</td>
+                            <td>{{ child|format_cc_element:""|safe }}</td>
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+        
+        {% if vehicle.maintenance.enabled %}
+        <div class="tab-pane" id="maintenance">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Attribute</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for child in vehicle.maintenance.children %}
                         {% if child.enabled and child.id != "commands" %}
                         <tr>
                             <td>{{ child.id }}</td>
@@ -185,6 +346,40 @@
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
         integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
         crossorigin=""></script>
+<script>
+// Tab functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const tabLinks = document.querySelectorAll('[data-bs-toggle="tab"]');
+    
+    tabLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Remove active class from all tabs and panes
+            tabLinks.forEach(l => l.classList.remove('active'));
+            document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+            
+            // Add active class to clicked tab
+            this.classList.add('active');
+            
+            // Show corresponding pane
+            const target = this.getAttribute('href');
+            const pane = document.querySelector(target);
+            if (pane) {
+                pane.classList.add('active');
+            }
+        });
+    });
+    
+    // Remove href from table cell links to prevent navigation
+    document.querySelectorAll('.table a[href="#"]').forEach(link => {
+        link.style.cursor = 'default';
+        link.style.textDecoration = 'none';
+        link.style.color = 'inherit';
+        link.addEventListener('click', e => e.preventDefault());
+    });
+});
+</script>
 {% if vehicle.position.enabled %}
 <script>
     var parkingPosition = L.latLng({{ vehicle.position.latitude.value }}, {{ vehicle.position.longitude.value }});

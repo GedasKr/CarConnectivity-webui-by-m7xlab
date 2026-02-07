@@ -36,10 +36,12 @@ def log_view(request: HttpRequest) -> HttpResponse:
         raise Http404("CarConnectivity instance not connected")
     
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    order = request.GET.get('order', 'desc')  # desc = latest first, asc = oldest first
     
     return render(request, 'log.html', {
         'car_connectivity': car_connectivity,
-        'formatter': formatter
+        'formatter': formatter,
+        'log_order': order
     })
 
 
