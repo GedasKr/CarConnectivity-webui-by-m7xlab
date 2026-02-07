@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 - No unreleased changes so far
 
+## [1.1.4] - 2026-02-07
+### Fixed
+- Garage: 20px gap between vehicle cards so blocks are no longer touching
+- Garage: equal height for all vehicle cards in the same row (flex layout so Enyaq and Taigo cards align)
+
+## [1.1.3] - 2026-02-07
+### Added
+- Garage: distinguish electric vs fuel vehicles — electric drives show "Battery" with battery icon, fuel drives show "Fuel" with fuel pump icon
+- `is_electric_drive` template filter to detect drive type (CarConnectivity `Type.ELECTRIC` / `Type.FUEL`)
+- Fuel pump icon (`static/icons/fuel.svg`) for fuel-level metric on vehicle cards
+
+### Fixed
+- Garage vehicle cards: "View Vehicle" button kept visible at bottom of card (flex layout with `margin-top: auto`) so long vehicle names no longer push the button out of view
+
+### Changed
+- Garage: one metric row per drive (Battery or Fuel) instead of a single "Battery" row for all drives; correct labels and icons per drive type
+
 ## [1.1.2] - 2026-02-07
 ### Added
 - Grafana link in navbar (points to `/grafana/` for nginx routing)

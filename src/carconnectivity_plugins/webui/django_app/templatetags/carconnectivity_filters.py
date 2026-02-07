@@ -139,6 +139,28 @@ def format_cc_element(element, alt_title: Optional[str] = None, with_tooltip: bo
 
 
 @register.filter
+def is_electric_drive(drive) -> bool:
+    """
+    Return True if the drive is electric (battery), False if fuel or unknown.
+    CarConnectivity drive objects have a type attribute (e.g. Type.ELECTRIC, Type.FUEL).
+    """
+    if not drive or not hasattr(drive, 'type'):
+        return True  # default to battery when type missing (backward compatibility)
+    t = getattr(drive, 'type', None)
+    if t is None:
+        return True
+    name = str(getattr(t, 'name', '') or '').upper()
+    value = str(getattr(t, 'value', '') or '').upper()
+    if name == 'ELECTRIC' or value == 'ELECTRIC':
+        return True
+    if name == 'FUEL' or value == 'FUEL' or 'FUEL' in name or 'FUEL' in value:
+        return False
+    if 'GAS' in name or 'GAS' in value or 'COMBUSTION' in name or 'COMBUSTION' in value:
+        return False
+    return True  # unknown type: assume electric
+
+
+@register.filter
 def ansi2html(ansi_str: str) -> str:
     """
     Convert ANSI color codes to HTML.

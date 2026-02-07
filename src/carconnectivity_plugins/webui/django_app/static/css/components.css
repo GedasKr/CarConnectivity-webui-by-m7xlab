@@ -471,6 +471,8 @@ footer {
   transition: all var(--transition-speed) var(--transition-timing);
   cursor: pointer;
   min-width: 250px;
+  display: flex;
+  flex-direction: column;
 }
 
 .vehicle-card:hover {
@@ -488,6 +490,17 @@ footer {
 
 .vehicle-card-body {
   padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1 1 auto;
+}
+
+.vehicle-card-cta {
+  width: 100%;
+  margin-top: auto;
+  flex-shrink: 0;
+  padding-top: var(--space-md);
 }
 
 .vehicle-card-title {
@@ -511,7 +524,7 @@ footer {
   font-size: var(--font-size-sm);
 }
 
-/* Fixed icon column so Battery, Range, Odometer labels and values align */
+/* Fixed icon column so Battery, Range, Odometer, Fuel labels and values align */
 .vehicle-card-metric > div:first-child {
   width: 28px;
   min-width: 28px;
@@ -519,6 +532,15 @@ footer {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.vehicle-card-metric-icon.fuel-icon {
+  color: var(--color-text-secondary);
+}
+
+.vehicle-card-metric-icon.fuel-icon img {
+  display: block;
+  object-fit: contain;
 }
 
 .vehicle-card-metric-label {
@@ -548,6 +570,35 @@ footer {
   display: flex;
   flex-wrap: wrap;
   margin: 0 calc(var(--space-md) * -1);
+}
+
+/* Garage: 20px gap between vehicle cards and equal height per row */
+.row.stagger-children {
+  margin: 0;
+  gap: 20px;
+}
+
+.row.stagger-children > [class*='col-'] {
+  display: flex;
+  margin-bottom: 0;
+  min-width: 0;
+}
+
+/* Column widths minus gap so row doesn't overflow */
+.row.stagger-children > .col-md-6 {
+  flex: 0 0 calc(50% - 10px);
+  max-width: calc(50% - 10px);
+}
+
+.row.stagger-children > .col-lg-4 {
+  flex: 0 0 calc(33.333% - 13.34px);
+  max-width: calc(33.333% - 13.34px);
+}
+
+.row.stagger-children .vehicle-card {
+  height: 100%;
+  min-height: 0;
+  flex: 1 1 auto;
 }
 
 .col {

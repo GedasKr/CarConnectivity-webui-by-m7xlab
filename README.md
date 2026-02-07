@@ -98,6 +98,7 @@ pip3 install carconnectivity-webui-by-m7xlab --upgrade
 The **Log** page shows the **system log** of the CarConnectivity process that runs this WebUI.
 
 - **Source**: Logs are not read from files or other services. The [CarConnectivity](https://github.com/tillsteinbach/CarConnectivity) core attaches an in-memory handler to Python’s `logging` module and appends `LogRecord` objects to a ring buffer. The WebUI reads that buffer and formats each record with a standard formatter (`%(asctime)s - %(name)s - %(levelname)s - %(message)s`). So you see **only logs from this process** (CarConnectivity + connectors + plugins in the same runtime).
+- **Buffer size**: The UI shows only the **last N entries** in that buffer (N is defined in CarConnectivity core, often around a dozen). For a longer or full history, use **container logs** (e.g. `docker logs`, pod logs, or a log file if you redirect stdout/stderr to a file). Container logs capture everything the process writes to stdout/stderr—including the same Python log lines plus HTTP server access logs (e.g. Werkzeug), urllib3, and other libraries—so they are more complete and can look different from the UI.
 - **Order**: The `?order=` query controls sort order on the log page:
   - `order=desc` (default): **Latest first** — most recent entries at the top.
   - `order=asc`: **Oldest first** — chronological order from the start of the buffer.
