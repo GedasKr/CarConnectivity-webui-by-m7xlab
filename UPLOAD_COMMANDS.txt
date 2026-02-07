@@ -1,106 +1,47 @@
-# Upload Commands for carconnectivity-webui-by-m7xlab v1.0.5
+# Upload Commands for carconnectivity-webui-by-m7xlab v1.0.6
 # ================================================================
 
-# CRITICAL FIX IN v1.0.5:
-# - Fixed Django initialization order (circular import issue)
-# - Changed wsgi.py to use lazy initialization via get_application()
-# - Django is now configured BEFORE get_wsgi_application() is called
-
-# Previous fixes:
-# v1.0.4 - Added plugin entry_points registration
-# v1.0.3 - Fixed static files packaging and JSON endpoint URL
-
-# IMPORTANT: You MUST uninstall the old package first!
-pip uninstall -y carconnectivity-plugin-webui
-
-# Then build and upload the new version:
+# CHANGES IN v1.0.6:
+# - Added debug logging to show static files path
+# - Added existence check for static directory
+# - Will help diagnose why static files aren't being served
 
 cd "/Users/gediminas.kristopaitis/Documents/Private & Shared/CarConnectivityPlus/CarConnectivity-plugin-webui"
 
-# Clean previous builds
+# Clean and build
 rm -rf dist/ build/ src/*.egg-info
-
-# Build the package (run outside sandbox for network access)
 python3 -m build
 
-# Check the built package
+# Check and upload
 python3 -m twine check dist/*
-
-# Upload to PyPI
 python3 -m twine upload dist/* --config-file .pypirc
 
 # ================================================================
-# After successful upload, install and test:
+# After upload, install and check logs:
 # ================================================================
 
-# Uninstall BOTH old and new packages
-pip uninstall -y carconnectivity-plugin-webui carconnectivity-webui-by-m7xlab
-
-# Install only the new package
+pip uninstall -y carconnectivity-webui-by-m7xlab
 pip install --no-cache-dir carconnectivity-webui-by-m7xlab
 
-# Verify the plugin is registered correctly:
-python3 -c "from importlib.metadata import entry_points; eps = entry_points(); plugins = eps.select(group='carconnectivity.plugins'); print('Registered plugins:'); [print(f'  {ep.name}: {ep.value}') for ep in plugins if 'webui' in ep.name]"
+# Restart application and look for these log lines:
+# "Django static path: /path/to/static"
+# "Static path exists: True/False"
+# "STATICFILES_DIRS configured: [...]"
 
-# Test import (should not raise any errors):
-python3 -c "from carconnectivity_plugins.webui.plugin import WebUI; print('✓ Plugin import successful')"
-
-# Verify static files are included:
-python3 -c "import carconnectivity_plugins.webui.django_app as app; import os; static_dir = os.path.join(os.path.dirname(app.__file__), 'static'); print(f'Static dir: {static_dir}'); print(f'Exists: {os.path.exists(static_dir)}'); print(f'Files: {len([f for root, dirs, files in os.walk(static_dir) for f in files])}')"
+# This will help us understand where Django is looking for static files
+# and whether they exist in the installed package.
 
 # ================================================================
-# WHAT WAS FIXED:
+# MANUAL CHECK (run in deployment environment):
 # ================================================================
-# 1. Django Initialization Order (v1.0.5):
-#    - Changed wsgi.py to NOT call get_wsgi_application() at import time
-#    - Added get_application() function for lazy initialization
-#    - plugin.py now calls get_application() AFTER Django is configured
-#    - This prevents "django.core.exceptions.ImproperlyConfigured" errors
-#
-# 2. Plugin Registration (v1.0.4):
-#    - Added [project.entry-points."carconnectivity.plugins"]
-#    - Entry: webui = "carconnectivity_plugins.webui.plugin:WebUI"
-#    - This tells CarConnectivity to load THIS plugin, not the old one
-#
-# 3. Static Files Packaging (v1.0.3):
-#    - Added [tool.setuptools.package-data] in pyproject.toml
-#    - Included templates/**/*.html and static/**/* explicitly
-#    - Updated MANIFEST.in with "graft" directive
-#
-# 4. JSON Endpoint URL (v1.0.3):
-#    - Changed path from '<str:vin>-car.png.json/' to '<str:vin>-car.png.json'
-#    - Reordered URLs to match .json before .png (more specific first)
-#    - Added APPEND_SLASH = False in settings.py
-#
-# ================================================================
-# ERROR THAT WAS FIXED:
-# ================================================================
-# Traceback (most recent call last):
-#   File "/opt/venv/lib/python3.12/site-packages/carconnectivity/carconnectivity.py", line 299, in __init__
-#     from carconnectivity_plugins.webui.django_app.wsgi import application
-#   File "/opt/venv/lib/python3.12/site-packages/carconnectivity_plugins/webui/django_app/wsgi.py", line 3, in <module>
-#     application = get_wsgi_application()
-#
-# The error occurred because wsgi.py was calling get_wsgi_application() at module
-# import time, but Django wasn't configured yet. The configuration happens in
-# plugin.py AFTER the import, creating a circular dependency.
-#
-# ================================================================
-# EXPECTED RESULTS AFTER v1.0.5:
-# ================================================================
-# 1. Plugin loads successfully without import errors
-# 2. Django WebUI starts on configured port (e.g., 0.0.0.0:8081)
-# 3. GET /garage/TMBJB9NY2RF012145-car.png.json?fallback=icons%2Fvehicle.png
-#    Should return: 200 OK with JSON response (no 301 redirect)
-# 4. GET /static/css/apple-design-system.css
-#    Should return: 200 OK with CSS content (no 404)
-# 5. GET /static/js/main.js
-#    Should return: 200 OK with JS content (no 404)
-# 6. Login page should show Apple-inspired design
-# 7. Application log should show:
-#    "Loading Django WebUI plugin with config..."
-#    "Plugin WebUI Plugin (Django) (Version 1.0.5) loaded..."
-#    "Starting Django WebUI plugin on 0.0.0.0:8081"
-#    "Django WebUI plugin started successfully"
-#
+
+# Check where the package is installed:
+python3 -c "import carconnectivity_plugins.webui.django_app as app; import os; print('Package location:', os.path.dirname(app.__file__))"
+
+# Check if static directory exists:
+python3 -c "import carconnectivity_plugins.webui.django_app as app; import os; static_dir = os.path.join(os.path.dirname(app.__file__), 'static'); print(f'Static dir: {static_dir}'); print(f'Exists: {os.path.exists(static_dir)}'); print(f'Contents: {os.listdir(static_dir) if os.path.exists(static_dir) else \"N/A\"}')"
+
+# List static files:
+python3 -c "import carconnectivity_plugins.webui.django_app as app; import os; static_dir = os.path.join(os.path.dirname(app.__file__), 'static'); [print(os.path.join(root, f)) for root, dirs, files in os.walk(static_dir) for f in files] if os.path.exists(static_dir) else print('Static dir not found')"
+
 # ================================================================

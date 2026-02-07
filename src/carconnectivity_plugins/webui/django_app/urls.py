@@ -45,6 +45,10 @@ urlpatterns = [
     path('json', api.json_status, name='json_status'),
 ]
 
-# Serve static files
+# Serve static files (always, not just in DEBUG mode)
+# This is needed because we're running as a plugin, not a traditional Django app
+from django.views.static import serve
 if settings.STATICFILES_DIRS:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
+    urlpatterns += [
+        path('static/<path:path>', serve, {'document_root': settings.STATICFILES_DIRS[0]}),
+    ]
