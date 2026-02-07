@@ -1,0 +1,95 @@
+╔══════════════════════════════════════════════════════════════════╗
+║                                                                  ║
+║  🚀 UPLOAD TO PyPI - Quick Commands                             ║
+║  Package: carconnectivity-webui-by-m7xlab v1.0.1               ║
+║                                                                  ║
+╚══════════════════════════════════════════════════════════════════╝
+
+⚠️  IMPORTANT: PyPI doesn't allow version reuse!
+   Version 1.0.0 was already uploaded, so we're using 1.0.1
+
+✅ FIXES APPLIED:
+   • Static files storage fixed (no more 500 errors)
+   • JSON image endpoint added: /garage/<VIN>-car.png.json/
+   • Version bumped to 1.0.1
+
+
+📦 RUN THESE COMMANDS IN YOUR TERMINAL:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+cd "/Users/gediminas.kristopaitis/Documents/Private & Shared/CarConnectivityPlus/CarConnectivity-plugin-webui"
+
+# 1. Clean previous builds
+rm -rf dist/ build/ src/*.egg-info
+
+# 2. Build package (version 1.0.1)
+python3 -m build
+
+# 3. Check package
+python3 -m twine check dist/*
+
+# 4. Upload to PyPI
+python3 -m twine upload dist/* --config-file .pypirc
+
+
+🎯 EXPECTED OUTPUT:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+After upload:
+  Uploading carconnectivity_webui_by_m7xlab-1.0.1-py3-none-any.whl
+  Uploading carconnectivity_webui_by_m7xlab-1.0.1.tar.gz
+  
+  View at:
+  https://pypi.org/project/carconnectivity-webui-by-m7xlab/1.0.1/
+
+
+✅ WHAT'S FIXED:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Static Files Issue:
+   Changed from CompressedManifestStaticFilesStorage 
+   to CompressedStaticFilesStorage
+   → No more "Missing staticfiles manifest" errors
+
+2. JSON Image Endpoint:
+   Added /garage/<VIN>-car.png.json/ route
+   → Your external app can fetch images as JSON
+   → Returns base64-encoded image data
+   → Supports fallback parameter
+
+3. Version:
+   Updated to 1.0.1 (PyPI doesn't allow version reuse)
+
+
+🧪 AFTER UPLOAD - TEST INSTALLATION:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+# Wait 1-2 minutes after upload, then:
+pip install carconnectivity-webui-by-m7xlab
+
+# Test it works:
+python3 -c "from carconnectivity_plugins.webui import plugin; print('✓ Success')"
+
+
+📝 API ENDPOINTS THAT WORK:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✓ /garage/<VIN>-car.png              → PNG image
+✓ /garage/<VIN>-car.png.json/        → JSON with base64 image
+✓ /garage/<VIN>-car.png?fallback=... → PNG with fallback
+✓ /garage/<VIN>-car.png.json/?fallback=... → JSON with fallback
+
+
+🔧 IF BUILD FAILS (Network Issues):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+# Install setuptools first
+pip install --upgrade setuptools pip build
+
+# Then build
+python3 -m build --no-isolation
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Ready to upload! Just copy and run the commands above. 🚀

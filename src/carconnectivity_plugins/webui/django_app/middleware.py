@@ -30,7 +30,7 @@ class CarConnectivityAuthMiddleware:
     
     def __init__(self, get_response):
         self.get_response = get_response
-        self.public_paths = ['/login', '/healthcheck', '/static/']
+        self.public_paths = ['/login', '/healthcheck', '/about', '/static/', '/favicon.ico']
     
     def __call__(self, request: HttpRequest) -> HttpResponse:
         # Check if path is public

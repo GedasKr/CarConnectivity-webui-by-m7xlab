@@ -25,7 +25,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -86,15 +85,14 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
-STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# WhiteNoise configuration for serving static files
-# Use basic storage without manifest for simpler deployment
-STORAGES = {
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
-    },
-}
+# Don't use STATIC_ROOT - serve directly from STATICFILES_DIRS
+# This is simpler for a plugin that doesn't need collectstatic
+STATIC_ROOT = None
+
+# Disable WhiteNoise storage backend - use default for simpler deployment
+# Static files will be served directly by Django in development
+# For production, WhiteNoise middleware will handle compression
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
