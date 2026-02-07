@@ -100,9 +100,9 @@ class Plugin(BasePlugin):
         from carconnectivity_plugins.webui.django_app import configure_from_plugin
         configure_from_plugin(config, car_connectivity, users)
         
-        # Get WSGI application
-        from carconnectivity_plugins.webui.django_app.wsgi import application
-        self.application = application
+        # Get WSGI application (call function to initialize Django)
+        from carconnectivity_plugins.webui.django_app.wsgi import get_application
+        self.application = get_application()
         
         # Create WSGI server
         self.server = make_server(

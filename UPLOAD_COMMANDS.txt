@@ -1,14 +1,15 @@
-# Upload Commands for carconnectivity-webui-by-m7xlab v1.0.3
+# Upload Commands for carconnectivity-webui-by-m7xlab v1.0.4
 # ================================================================
 
-# CRITICAL FIXES IN v1.0.3:
-# - Fixed static files packaging with setuptools package_data
-# - Fixed JSON endpoint URL (removed trailing slash to prevent 301 redirect)
-# - Changed URL order to match .json before .png
-# - Added APPEND_SLASH = False to prevent Django redirects
-# - Improved MANIFEST.in to include all static files
+# CRITICAL FIX IN v1.0.4:
+# - Added [project.entry-points."carconnectivity.plugins"] section
+# - This registers the plugin with CarConnectivity framework
+# - Without this, the old Flask version (carconnectivity-plugin-webui) was being loaded
 
-# Run these commands in your terminal:
+# IMPORTANT: You MUST uninstall the old package first!
+pip uninstall -y carconnectivity-plugin-webui
+
+# Then build and upload the new version:
 
 cd "/Users/gediminas.kristopaitis/Documents/Private & Shared/CarConnectivityPlus/CarConnectivity-plugin-webui"
 
@@ -25,46 +26,58 @@ python3 -m twine check dist/*
 python3 -m twine upload dist/* --config-file .pypirc
 
 # ================================================================
-# After successful upload, test installation:
+# After successful upload, install and test:
 # ================================================================
 
-# In a new terminal or environment:
-pip uninstall -y carconnectivity-webui-by-m7xlab
+# Uninstall BOTH old and new packages
+pip uninstall -y carconnectivity-plugin-webui carconnectivity-webui-by-m7xlab
+
+# Install only the new package
 pip install --no-cache-dir carconnectivity-webui-by-m7xlab
 
-# Verify static files are included:
-python3 -c "import carconnectivity_plugins.webui.django_app as app; import os; print(os.path.join(os.path.dirname(app.__file__), 'static'))"
+# Verify the plugin is registered correctly:
+python3 -c "from importlib.metadata import entry_points; eps = entry_points(); plugins = eps.select(group='carconnectivity.plugins'); print('Registered plugins:'); [print(f'  {ep.name}: {ep.value}') for ep in plugins if 'webui' in ep.name]"
 
-# List static files in installed package:
-python3 -c "import carconnectivity_plugins.webui.django_app as app; import os; static_dir = os.path.join(os.path.dirname(app.__file__), 'static'); print('Static files:'); [print(os.path.join(root, f)) for root, dirs, files in os.walk(static_dir) for f in files[:10]]"
+# Verify static files are included:
+python3 -c "import carconnectivity_plugins.webui.django_app as app; import os; static_dir = os.path.join(os.path.dirname(app.__file__), 'static'); print(f'Static dir: {static_dir}'); print(f'Exists: {os.path.exists(static_dir)}'); print(f'Files: {len([f for root, dirs, files in os.walk(static_dir) for f in files])}')"
 
 # ================================================================
 # WHAT WAS FIXED:
 # ================================================================
-# 1. Static Files Packaging:
+# 1. Plugin Registration (v1.0.4):
+#    - Added [project.entry-points."carconnectivity.plugins"]
+#    - Entry: webui = "carconnectivity_plugins.webui.plugin:WebUI"
+#    - This tells CarConnectivity to load THIS plugin, not the old one
+#
+# 2. Static Files Packaging (v1.0.3):
 #    - Added [tool.setuptools.package-data] in pyproject.toml
 #    - Included templates/**/*.html and static/**/* explicitly
 #    - Updated MANIFEST.in with "graft" directive
 #
-# 2. JSON Endpoint URL:
+# 3. JSON Endpoint URL (v1.0.3):
 #    - Changed path from '<str:vin>-car.png.json/' to '<str:vin>-car.png.json'
 #    - Reordered URLs to match .json before .png (more specific first)
 #    - Added APPEND_SLASH = False in settings.py
 #
-# 3. Static File Serving:
-#    - Simplified STATICFILES_DIRS configuration
-#    - Added explicit os.path.join for compatibility
+# ================================================================
+# WHY IT WASN'T WORKING:
+# ================================================================
+# The system was loading the OLD Flask package (carconnectivity-plugin-webui)
+# because BOTH packages were installed, and the new package wasn't registered
+# as a plugin entry point. Python's entry_points system uses the group
+# "carconnectivity.plugins" to discover plugins, and without this registration,
+# CarConnectivity couldn't find the new Django version.
 #
 # ================================================================
-# EXPECTED RESULTS:
+# EXPECTED RESULTS AFTER v1.0.4:
 # ================================================================
-# 1. GET /garage/TMBJB9NY2RF012145-car.png.json?fallback=icons%2Fvehicle.png
+# 1. Plugin loads Django version (not Flask)
+# 2. GET /garage/TMBJB9NY2RF012145-car.png.json?fallback=icons%2Fvehicle.png
 #    Should return: 200 OK with JSON response (no 301 redirect)
-#
-# 2. GET /static/css/apple-design-system.css
+# 3. GET /static/css/apple-design-system.css
 #    Should return: 200 OK with CSS content (no 404)
-#
-# 3. GET /static/js/main.js
+# 4. GET /static/js/main.js
 #    Should return: 200 OK with JS content (no 404)
+# 5. Login page should show Apple-inspired design
 #
 # ================================================================
