@@ -31,9 +31,9 @@ The WebUI has been completely redesigned with:
 - **Better Performance**: Optimized static file serving with WhiteNoise
 - **Enhanced Security**: Django's built-in security features
 
-<img src="https://raw.githubusercontent.com/tGedasKr/CarConnectivity-webui-by-m7xlab/main/screenshots/screenshot1.png" width="300">
-<img src="https://raw.githubusercontent.com/tGedasKr/CarConnectivity-webui-by-m7xlab/main/screenshots/screenshot2.png" width="300">
-<img src="https://raw.githubusercontent.com/tGedasKr/CarConnectivity-webui-by-m7xlab/main/screenshots/screenshot3.png" width="300">
+<img src="https://raw.githubusercontent.com/GedasKr/CarConnectivity-webui-by-m7xlab/main/screenshots/screenshot1.png" width="300">
+<img src="https://raw.githubusercontent.com/GedasKr/CarConnectivity-webui-by-m7xlab/main/screenshots/screenshot2.png" width="300">
+<img src="https://raw.githubusercontent.com/GedasKr/CarConnectivity-webui-by-m7xlab/main/screenshots/screenshot3.png" width="300">
 
 ## How to install
 
