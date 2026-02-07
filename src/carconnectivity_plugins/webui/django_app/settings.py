@@ -84,10 +84,23 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # Static files are in the django_app/static directory
+# BASE_DIR points to the django_app directory in the installed package
 import os
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
+import logging
+logger = logging.getLogger(__name__)
+
+static_path = os.path.join(BASE_DIR, 'static')
+logger.info(f"Django static path: {static_path}")
+logger.info(f"Static path exists: {os.path.exists(static_path)}")
+
+# Only add to STATICFILES_DIRS if the directory exists
+if os.path.exists(static_path):
+    STATICFILES_DIRS = [static_path]
+    logger.info(f"STATICFILES_DIRS configured: {STATICFILES_DIRS}")
+else:
+    # Fallback: static files might be in a different location
+    STATICFILES_DIRS = []
+    logger.warning(f"Static directory not found at {static_path}")
 
 # For serving static files in production without collectstatic
 STATIC_ROOT = None
