@@ -53,6 +53,9 @@ Documentation = "https://github.com/m7xlab/CarConnectivity-plugin-webui/blob/mai
 
 [project.scripts]
 
+[project.entry-points."carconnectivity.plugins"]
+webui = "carconnectivity_plugins.webui.plugin:WebUI"
+
 [tool.setuptools]
 include-package-data = true
 

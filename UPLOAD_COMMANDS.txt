@@ -1,97 +1,70 @@
-╔══════════════════════════════════════════════════════════════════╗
-║                                                                  ║
-║  🚀 UPLOAD TO PyPI - Quick Commands                             ║
-║  Package: carconnectivity-webui-by-m7xlab v1.0.2               ║
-║                                                                  ║
-╚══════════════════════════════════════════════════════════════════╝
+# Upload Commands for carconnectivity-webui-by-m7xlab v1.0.3
+# ================================================================
 
-⚠️  IMPORTANT: PyPI doesn't allow version reuse!
-   Versions 1.0.0 and 1.0.1 already uploaded, using 1.0.2
+# CRITICAL FIXES IN v1.0.3:
+# - Fixed static files packaging with setuptools package_data
+# - Fixed JSON endpoint URL (removed trailing slash to prevent 301 redirect)
+# - Changed URL order to match .json before .png
+# - Added APPEND_SLASH = False to prevent Django redirects
+# - Improved MANIFEST.in to include all static files
 
-✅ FIXES APPLIED (v1.0.2):
-   • Static files serving fixed - removed WhiteNoise complexity
-   • Static files now served directly by Django
-   • JSON image endpoint added: /garage/<VIN>-car.png.json/
-   • Middleware updated to allow static file access
-   • Version bumped to 1.0.2
-
-
-📦 RUN THESE COMMANDS IN YOUR TERMINAL:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Run these commands in your terminal:
 
 cd "/Users/gediminas.kristopaitis/Documents/Private & Shared/CarConnectivityPlus/CarConnectivity-plugin-webui"
 
-# 1. Clean previous builds
+# Clean previous builds
 rm -rf dist/ build/ src/*.egg-info
 
-# 2. Build package (version 1.0.2)
+# Build the package (run outside sandbox for network access)
 python3 -m build
 
-# 3. Check package
+# Check the built package
 python3 -m twine check dist/*
 
-# 4. Upload to PyPI
+# Upload to PyPI
 python3 -m twine upload dist/* --config-file .pypirc
 
+# ================================================================
+# After successful upload, test installation:
+# ================================================================
 
-🎯 EXPECTED OUTPUT:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# In a new terminal or environment:
+pip uninstall -y carconnectivity-webui-by-m7xlab
+pip install --no-cache-dir carconnectivity-webui-by-m7xlab
 
-After upload:
-  Uploading carconnectivity_webui_by_m7xlab-1.0.2-py3-none-any.whl
-  Uploading carconnectivity_webui_by_m7xlab-1.0.2.tar.gz
-  
-  View at:
-  https://pypi.org/project/carconnectivity-webui-by-m7xlab/1.0.2/
+# Verify static files are included:
+python3 -c "import carconnectivity_plugins.webui.django_app as app; import os; print(os.path.join(os.path.dirname(app.__file__), 'static'))"
 
+# List static files in installed package:
+python3 -c "import carconnectivity_plugins.webui.django_app as app; import os; static_dir = os.path.join(os.path.dirname(app.__file__), 'static'); print('Static files:'); [print(os.path.join(root, f)) for root, dirs, files in os.walk(static_dir) for f in files[:10]]"
 
-✅ WHAT'S FIXED:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-1. Static Files Issue:
-   Changed from CompressedManifestStaticFilesStorage 
-   to CompressedStaticFilesStorage
-   → No more "Missing staticfiles manifest" errors
-
-2. JSON Image Endpoint:
-   Added /garage/<VIN>-car.png.json/ route
-   → Your external app can fetch images as JSON
-   → Returns base64-encoded image data
-   → Supports fallback parameter
-
-3. Version:
-   Updated to 1.0.1 (PyPI doesn't allow version reuse)
-
-
-🧪 AFTER UPLOAD - TEST INSTALLATION:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-# Wait 1-2 minutes after upload, then:
-pip install carconnectivity-webui-by-m7xlab
-
-# Test it works:
-python3 -c "from carconnectivity_plugins.webui import plugin; print('✓ Success')"
-
-
-📝 API ENDPOINTS THAT WORK:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-✓ /garage/<VIN>-car.png              → PNG image
-✓ /garage/<VIN>-car.png.json/        → JSON with base64 image
-✓ /garage/<VIN>-car.png?fallback=... → PNG with fallback
-✓ /garage/<VIN>-car.png.json/?fallback=... → JSON with fallback
-
-
-🔧 IF BUILD FAILS (Network Issues):
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-# Install setuptools first
-pip install --upgrade setuptools pip build
-
-# Then build
-python3 -m build --no-isolation
-
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Ready to upload! Just copy and run the commands above. 🚀
+# ================================================================
+# WHAT WAS FIXED:
+# ================================================================
+# 1. Static Files Packaging:
+#    - Added [tool.setuptools.package-data] in pyproject.toml
+#    - Included templates/**/*.html and static/**/* explicitly
+#    - Updated MANIFEST.in with "graft" directive
+#
+# 2. JSON Endpoint URL:
+#    - Changed path from '<str:vin>-car.png.json/' to '<str:vin>-car.png.json'
+#    - Reordered URLs to match .json before .png (more specific first)
+#    - Added APPEND_SLASH = False in settings.py
+#
+# 3. Static File Serving:
+#    - Simplified STATICFILES_DIRS configuration
+#    - Added explicit os.path.join for compatibility
+#
+# ================================================================
+# EXPECTED RESULTS:
+# ================================================================
+# 1. GET /garage/TMBJB9NY2RF012145-car.png.json?fallback=icons%2Fvehicle.png
+#    Should return: 200 OK with JSON response (no 301 redirect)
+#
+# 2. GET /static/css/apple-design-system.css
+#    Should return: 200 OK with CSS content (no 404)
+#
+# 3. GET /static/js/main.js
+#    Should return: 200 OK with JS content (no 404)
+#
+# ================================================================
