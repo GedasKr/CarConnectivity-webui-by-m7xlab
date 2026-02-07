@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Restarting{% endblock %}
+{% block header %}Restarting CarConnectivity{% endblock %}
+
+{% block content %}
+<div class="glass-card text-center" style="padding: var(--space-3xl);">
+    <div class="spinner" style="margin: 0 auto var(--space-lg);"></div>
+    <h3>Restarting...</h3>
+    <p class="text-secondary">Please wait while the application restarts.</p>
+    <p class="text-secondary">This page will automatically refresh.</p>
+</div>
+
+<script>
+    setTimeout(function() {
+        location.reload();
+    }, 15000);
+</script>
+{% endblock %}

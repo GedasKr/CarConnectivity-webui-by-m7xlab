@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Connectors Status{% endblock %}
+{% block header %}Connectors Status{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Connector ID</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Version</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for connector in connectors.connectors.values %}
+                <tr>
+                    <td>{{ connector.id }}</td>
+                    <td>{{ connector.get_type }}</td>
+                    <td>
+                        {% if connector.healthy.value %}
+                            <span class="badge badge-success">Healthy</span>
+                        {% else %}
+                            <span class="badge badge-danger">Unhealthy</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ connector.get_version }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

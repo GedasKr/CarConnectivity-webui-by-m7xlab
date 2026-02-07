@@ -1,0 +1,377 @@
+/**
+ * Responsive Design
+ * Mobile-first approach with breakpoints
+ */
+
+/* ============================================
+   Breakpoints
+   ============================================ */
+
+/* Mobile: < 768px (default) */
+/* Tablet: 768px - 1023px */
+/* Desktop: 1024px - 1439px */
+/* Large Desktop: >= 1440px */
+
+/* ============================================
+   Base Mobile Styles
+   ============================================ */
+
+.container {
+  padding: 0 var(--space-md);
+}
+
+.row {
+  margin: 0 calc(var(--space-sm) * -1);
+}
+
+.col {
+  padding: 0 var(--space-sm);
+}
+
+/* Mobile Navigation */
+@media (max-width: 767px) {
+  .navbar-toggler {
+    display: block;
+  }
+  
+  .navbar-nav {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: var(--color-surface);
+    flex-direction: column;
+    padding: var(--space-md);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-100%);
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-speed) var(--transition-timing);
+    max-height: calc(100vh - 60px);
+    overflow-y: auto;
+  }
+  
+  .navbar-nav.active {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .nav-item {
+    width: 100%;
+  }
+  
+  .nav-link {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  
+  .dropdown-menu {
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    box-shadow: none;
+    margin-top: var(--space-sm);
+    margin-left: var(--space-md);
+  }
+  
+  .dropend .dropdown-menu {
+    left: 0;
+    margin-left: var(--space-md);
+  }
+}
+
+/* Mobile Cards */
+@media (max-width: 767px) {
+  .card {
+    margin-bottom: var(--space-md);
+  }
+  
+  .vehicle-card {
+    width: 100%;
+  }
+  
+  .col-1, .col-2, .col-3, .col-4, .col-6, .col-8, .col-12 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+
+/* Mobile Tables */
+@media (max-width: 767px) {
+  .table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .table thead {
+    display: none;
+  }
+  
+  .table tbody {
+    display: block;
+  }
+  
+  .table tr {
+    display: block;
+    margin-bottom: var(--space-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    padding: var(--space-md);
+  }
+  
+  .table td {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--space-sm) 0;
+    border: none;
+  }
+  
+  .table td::before {
+    content: attr(data-label);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-secondary);
+    margin-right: var(--space-md);
+  }
+}
+
+/* Mobile Forms */
+@media (max-width: 767px) {
+  .form-control {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+}
+
+/* ============================================
+   Tablet Styles (768px+)
+   ============================================ */
+
+@media (min-width: 768px) {
+  .container {
+    padding: 0 var(--space-lg);
+  }
+  
+  .row {
+    margin: 0 calc(var(--space-md) * -1);
+  }
+  
+  .col {
+    padding: 0 var(--space-md);
+  }
+  
+  /* Tablet Grid */
+  .col-md-1 { flex: 0 0 8.333333%; max-width: 8.333333%; }
+  .col-md-2 { flex: 0 0 16.666667%; max-width: 16.666667%; }
+  .col-md-3 { flex: 0 0 25%; max-width: 25%; }
+  .col-md-4 { flex: 0 0 33.333333%; max-width: 33.333333%; }
+  .col-md-6 { flex: 0 0 50%; max-width: 50%; }
+  .col-md-8 { flex: 0 0 66.666667%; max-width: 66.666667%; }
+  .col-md-12 { flex: 0 0 100%; max-width: 100%; }
+  
+  /* Tablet Cards */
+  .vehicle-card {
+    width: calc(50% - var(--space-md));
+  }
+  
+  /* Tablet Typography */
+  h1 {
+    font-size: 36px;
+  }
+  
+  h2 {
+    font-size: 28px;
+  }
+}
+
+/* ============================================
+   Desktop Styles (1024px+)
+   ============================================ */
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1200px;
+  }
+  
+  /* Desktop Grid */
+  .col-lg-1 { flex: 0 0 8.333333%; max-width: 8.333333%; }
+  .col-lg-2 { flex: 0 0 16.666667%; max-width: 16.666667%; }
+  .col-lg-3 { flex: 0 0 25%; max-width: 25%; }
+  .col-lg-4 { flex: 0 0 33.333333%; max-width: 33.333333%; }
+  .col-lg-6 { flex: 0 0 50%; max-width: 50%; }
+  .col-lg-8 { flex: 0 0 66.666667%; max-width: 66.666667%; }
+  .col-lg-12 { flex: 0 0 100%; max-width: 100%; }
+  
+  /* Desktop Cards */
+  .vehicle-card {
+    width: calc(33.333% - var(--space-md));
+  }
+  
+  /* Desktop Typography */
+  h1 {
+    font-size: var(--font-size-2xl);
+  }
+  
+  /* Desktop Navigation */
+  .navbar-nav {
+    gap: var(--space-md);
+  }
+}
+
+/* ============================================
+   Large Desktop Styles (1440px+)
+   ============================================ */
+
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1400px;
+  }
+  
+  /* Large Desktop Grid */
+  .col-xl-1 { flex: 0 0 8.333333%; max-width: 8.333333%; }
+  .col-xl-2 { flex: 0 0 16.666667%; max-width: 16.666667%; }
+  .col-xl-3 { flex: 0 0 25%; max-width: 25%; }
+  .col-xl-4 { flex: 0 0 33.333333%; max-width: 33.333333%; }
+  .col-xl-6 { flex: 0 0 50%; max-width: 50%; }
+  .col-xl-8 { flex: 0 0 66.666667%; max-width: 66.666667%; }
+  .col-xl-12 { flex: 0 0 100%; max-width: 100%; }
+  
+  /* Large Desktop Cards */
+  .vehicle-card {
+    width: calc(25% - var(--space-md));
+  }
+  
+  /* Large Desktop Typography */
+  h1 {
+    font-size: var(--font-size-3xl);
+  }
+}
+
+/* ============================================
+   Utility Classes
+   ============================================ */
+
+/* Hide/Show on different breakpoints */
+.d-none { display: none !important; }
+.d-block { display: block !important; }
+.d-flex { display: flex !important; }
+.d-inline { display: inline !important; }
+.d-inline-block { display: inline-block !important; }
+
+@media (max-width: 767px) {
+  .d-sm-none { display: none !important; }
+  .d-sm-block { display: block !important; }
+  .d-sm-flex { display: flex !important; }
+}
+
+@media (min-width: 768px) {
+  .d-md-none { display: none !important; }
+  .d-md-block { display: block !important; }
+  .d-md-flex { display: flex !important; }
+}
+
+@media (min-width: 1024px) {
+  .d-lg-none { display: none !important; }
+  .d-lg-block { display: block !important; }
+  .d-lg-flex { display: flex !important; }
+}
+
+@media (min-width: 1440px) {
+  .d-xl-none { display: none !important; }
+  .d-xl-block { display: block !important; }
+  .d-xl-flex { display: flex !important; }
+}
+
+/* Text alignment */
+@media (max-width: 767px) {
+  .text-sm-center { text-align: center !important; }
+  .text-sm-left { text-align: left !important; }
+  .text-sm-right { text-align: right !important; }
+}
+
+@media (min-width: 768px) {
+  .text-md-center { text-align: center !important; }
+  .text-md-left { text-align: left !important; }
+  .text-md-right { text-align: right !important; }
+  .text-md-end { text-align: right !important; }
+}
+
+@media (min-width: 1024px) {
+  .text-lg-center { text-align: center !important; }
+  .text-lg-left { text-align: left !important; }
+  .text-lg-right { text-align: right !important; }
+}
+
+/* ============================================
+   Print Styles
+   ============================================ */
+
+@media print {
+  .navbar,
+  .theme-toggle,
+  .btn,
+  footer {
+    display: none !important;
+  }
+  
+  body {
+    background: white;
+    color: black;
+  }
+  
+  .card,
+  .glass-card {
+    box-shadow: none;
+    border: 1px solid #ddd;
+    page-break-inside: avoid;
+  }
+}
+
+/* ============================================
+   Touch Device Optimizations
+   ============================================ */
+
+@media (hover: none) and (pointer: coarse) {
+  /* Larger touch targets */
+  .btn {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  .nav-link {
+    min-height: 44px;
+  }
+  
+  .form-control {
+    min-height: 44px;
+  }
+  
+  /* Remove hover effects on touch devices */
+  .card:hover,
+  .vehicle-card:hover,
+  .btn:hover {
+    transform: none;
+  }
+  
+  /* Disable glassmorphism on lower-end devices */
+  .glass-card,
+  .glass-surface,
+  .navbar {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+/* ============================================
+   High DPI / Retina Displays
+   ============================================ */
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  /* Sharper borders */
+  .card,
+  .btn,
+  .form-control {
+    border-width: 0.5px;
+  }
+}

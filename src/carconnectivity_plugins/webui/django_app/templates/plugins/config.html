@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ plugin.id }} Configuration{% endblock %}
+{% block header %}{{ plugin.id }} Configuration{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <pre style="background: var(--color-surface-elevated); padding: var(--space-lg); border-radius: var(--border-radius-md); overflow-x: auto;">{{ plugin.active_config }}</pre>
+    </div>
+</div>
+{% endblock %}

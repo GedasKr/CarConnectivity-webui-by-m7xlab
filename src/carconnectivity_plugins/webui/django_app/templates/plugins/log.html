@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load carconnectivity_filters %}
+
+{% block title %}{{ plugin.id }} Log{% endblock %}
+{% block header %}{{ plugin.id }} Log{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <pre style="background: var(--color-surface-elevated); padding: var(--space-lg); border-radius: var(--border-radius-md); overflow-x: auto; max-height: 600px;">{% for record in plugin.log_storage.buffer %}{{ record.getMessage|ansi2html|safe }}
+{% endfor %}</pre>
+    </div>
+</div>
+{% endblock %}

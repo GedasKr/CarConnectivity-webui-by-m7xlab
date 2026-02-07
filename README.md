@@ -1,29 +1,53 @@
 
 
-# CarConnectivity Plugin for A Web based User Interface
-[![GitHub sourcecode](https://img.shields.io/badge/Source-GitHub-green)](https://github.com/tillsteinbach/CarConnectivity-plugin-webui/)
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/tillsteinbach/CarConnectivity-plugin-webui)](https://github.com/tillsteinbach/CarConnectivity-plugin-webui/releases/latest)
-[![GitHub](https://img.shields.io/github/license/tillsteinbach/CarConnectivity-plugin-webui)](https://github.com/tillsteinbach/CarConnectivity-plugin-webui/blob/master/LICENSE)
-[![GitHub issues](https://img.shields.io/github/issues/tillsteinbach/CarConnectivity-plugin-webui)](https://github.com/tillsteinbach/CarConnectivity-plugin-webui/issues)
-[![PyPI - Downloads](https://img.shields.io/pypi/dm/carconnectivity-plugin-webui?label=PyPI%20Downloads)](https://pypi.org/project/carconnectivity-plugin-webui/)
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/carconnectivity-plugin-webui)](https://pypi.org/project/carconnectivity-plugin-webui/)
-[![Donate at PayPal](https://img.shields.io/badge/Donate-PayPal-2997d8)](https://www.paypal.com/donate?hosted_button_id=2BVFF5GJ9SXAJ)
-[![Sponsor at Github](https://img.shields.io/badge/Sponsor-GitHub-28a745)](https://github.com/sponsors/tillsteinbach)
+# CarConnectivity WebUI by m7xlab
 
-## CarConnectivity will become the successor of [WeConnect-python](https://github.com/tillsteinbach/WeConnect-python) in 2025 with similar functionality but support for other brands beyond Volkswagen!
+[![PyPI version](https://img.shields.io/pypi/v/carconnectivity-webui-by-m7xlab)](https://pypi.org/project/carconnectivity-webui-by-m7xlab/)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/carconnectivity-webui-by-m7xlab?label=PyPI%20Downloads)](https://pypi.org/project/carconnectivity-webui-by-m7xlab/)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/carconnectivity-webui-by-m7xlab)](https://pypi.org/project/carconnectivity-webui-by-m7xlab/)
+[![GitHub](https://img.shields.io/github/license/m7xlab/CarConnectivity-plugin-webui)](https://github.com/m7xlab/CarConnectivity-plugin-webui/blob/main/LICENSE)
+[![Django](https://img.shields.io/badge/Django-5.0-green)](https://www.djangoproject.com/)
 
-[CarConnectivity](https://github.com/tillsteinbach/CarConnectivity) is a python API to connect to various car services. This plugin allows you to use a browser to interact with CarConnectivity.
+> Modern Django-based WebUI for CarConnectivity with Apple-inspired design
+
+## About
+
+This is a modern Django-based WebUI plugin for [CarConnectivity](https://github.com/tillsteinbach/CarConnectivity) - a Python API to connect to various car services. 
+
+**Note**: This is an enhanced fork maintained by m7xlab, featuring a complete rewrite with Django framework and Apple-inspired design system.
+
+### Original Project
+Based on the original [CarConnectivity-plugin-webui](https://github.com/tillsteinbach/CarConnectivity-plugin-webui) by Till Steinbach.
+
+## ✨ New: Modern Django-Based UI with Apple-Inspired Design
+
+The WebUI has been completely redesigned with:
+- **Modern Framework**: Migrated from Flask to Django 5.0
+- **Apple-Inspired Design**: Clean, minimalist interface with glassmorphism effects
+- **Dark Mode**: Full dark mode support with automatic detection
+- **Responsive**: Mobile-first design that works on all devices
+- **Smooth Animations**: 60fps transitions and micro-interactions
+- **Modern Icons**: Heroicons SVG icon library
+- **Better Performance**: Optimized static file serving with WhiteNoise
+- **Enhanced Security**: Django's built-in security features
 
 <img src="https://raw.githubusercontent.com/tillsteinbach/CarConnectivity-plugin-webui/main/screenshots/screenshot1.png" width="300">
 
 ## How to install
 
 ### Install using PIP
-If you want to use CarConnectivity Web UI, the easiest way is to obtain it from [PyPI](https://pypi.org/project/carconnectivity-plugin-webui/). Just install instead using:
+If you want to use CarConnectivity Web UI, the easiest way is to obtain it from [PyPI](https://pypi.org/project/carconnectivity-webui-by-m7xlab/). Just install using:
 ```bash
-pip3 install carconnectivity-plugin-webui
+pip3 install carconnectivity-webui-by-m7xlab
 ```
 after you installed CarConnectivity
+
+### Install from Source (Development)
+```bash
+git clone https://github.com/tillsteinbach/CarConnectivity-plugin-webui.git
+cd CarConnectivity-plugin-webui
+pip3 install -e .
+```
 
 ## Configuration
 In your carconnectivity.json configuration add a section for the webui plugin like this. A documentation of all possible config options can be found [here](https://github.com/tillsteinbach/CarConnectivity-plugin-webui/tree/main/doc/Config.md).
@@ -53,5 +77,16 @@ Always set your personal username and password to protect your data from theft.
 ## Updates
 If you want to update, the easiest way is:
 ```bash
-pip3 install carconnectivity-plugin-webui --upgrade
+pip3 install carconnectivity-webui-by-m7xlab --upgrade
 ```
+
+## Features
+
+- 🎨 **Modern Design**: Apple-inspired UI with glassmorphism effects
+- 🌓 **Dark Mode**: Automatic dark mode detection with manual toggle
+- 📱 **Responsive**: Works perfectly on mobile, tablet, and desktop
+- ⚡ **Fast**: Optimized performance with Django and WhiteNoise
+- 🔒 **Secure**: Django's built-in security features
+- ♿ **Accessible**: WCAG 2.1 AA compliant
+- 🎭 **Smooth Animations**: 60fps transitions and micro-interactions
+- 🎯 **Modern Icons**: Heroicons SVG icon library

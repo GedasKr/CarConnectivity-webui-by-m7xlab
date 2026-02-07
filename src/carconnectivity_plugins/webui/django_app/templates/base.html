@@ -1,0 +1,55 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %} - CarConnectivity</title>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="{% static 'css/apple-design-system.css' %}">
+    <link rel="stylesheet" href="{% static 'css/components.css' %}">
+    <link rel="stylesheet" href="{% static 'css/animations.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navigation -->
+    {% include 'components/navbar.html' %}
+    
+    <!-- Main Content -->
+    <main class="container animate-fade-in" style="margin-top: var(--space-xl); min-height: calc(100vh - 200px);">
+        <h1 class="mb-3">{% block header %}{% endblock %}</h1>
+        
+        <!-- Flash Messages -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible">
+                    {{ message }}
+                    <button type="button" class="btn-close" aria-label="Close">&times;</button>
+                </div>
+            {% endfor %}
+        {% endif %}
+        
+        {% block content %}{% endblock %}
+    </main>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p>CarConnectivity</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="{% url 'about' %}">About</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Scripts -->
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

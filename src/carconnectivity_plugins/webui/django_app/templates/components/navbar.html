@@ -1,0 +1,81 @@
+{% load static %}
+<nav class="navbar">
+    <div class="navbar-container">
+        <a href="{% url 'root' %}" class="navbar-brand">CarConnectivity</a>
+        
+        <button class="navbar-toggler">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <ul class="navbar-nav">
+            {% for item in navbar %}
+                {% if item.divider %}
+                    <li class="dropdown-divider"></li>
+                {% elif not item.sublinks %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ item.url }}">{{ item.text }}</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="{{ item.url }}">
+                            {{ item.text }}
+                            <svg style="width: 16px; height: 16px; display: inline; margin-left: 4px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                            </svg>
+                        </a>
+                        <ul class="dropdown-menu">
+                            {% for sublink in item.sublinks %}
+                                {% if sublink.divider %}
+                                    <li class="dropdown-divider"></li>
+                                {% elif not sublink.sublinks %}
+                                    <li><a class="dropdown-item" href="{{ sublink.url }}">{{ sublink.text }}</a></li>
+                                {% else %}
+                                    <li class="dropend">
+                                        <a class="dropdown-item" href="#">
+                                            {{ sublink.text }}
+                                            <svg style="width: 16px; height: 16px; display: inline; margin-left: 4px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                                            </svg>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            {% for subsublink in sublink.sublinks %}
+                                                <li><a class="dropdown-item" href="{{ subsublink.url }}">{{ subsublink.text }}</a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            
+            <!-- Theme Toggle -->
+            <li class="nav-item">
+                <button class="theme-toggle" aria-label="Toggle theme">
+                    <span class="theme-icon">🌙</span>
+                </button>
+            </li>
+            
+            <!-- User Menu -->
+            {% if current_user %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link" href="#">
+                        <img src="{% static 'icons/user.svg' %}" alt="User" style="width: 20px; height: 20px; display: inline;">
+                        {{ current_user.get_id }}
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{% url 'logout' %}">
+                            <img src="{% static 'icons/logout.svg' %}" alt="Logout" style="width: 16px; height: 16px; display: inline; margin-right: 8px;">
+                            Logout
+                        </a></li>
+                    </ul>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>

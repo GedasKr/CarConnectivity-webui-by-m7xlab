@@ -1,0 +1,205 @@
+{% extends 'base.html' %}
+{% load static carconnectivity_filters %}
+
+{% block title %}{{ vehicle.name.value|default:vehicle.id }}{% endblock %}
+
+{% block header %}{{ vehicle.name.value|default:vehicle.id }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+      crossorigin="">
+{% endblock %}
+
+{% block content %}
+<div class="card animate-fade-in">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-12 col-md-4">
+                <img src="{% url 'vehicle_img' vin=vehicle.vin.value %}?fallback=icons/car.svg" 
+                     alt="{{ vehicle.name.value|default:vehicle.id }}" 
+                     style="width: 100%; border-radius: var(--border-radius-md);">
+            </div>
+            {% if vehicle.position.enabled %}
+                <div class="col-12 col-md-8">
+                    <div id="mapid"></div>
+                </div>
+            {% endif %}
+        </div>
+        
+        <!-- Tabs -->
+        <ul class="nav-tabs" style="margin-top: var(--space-lg);">
+            <li class="nav-item">
+                <a class="nav-link active" data-bs-toggle="tab" href="#vehicle">Vehicle</a>
+            </li>
+            {% if vehicle.specification.enabled %}
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#specification">Specification</a>
+            </li>
+            {% endif %}
+            {% if vehicle.software.enabled %}
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#software">Software</a>
+            </li>
+            {% endif %}
+            {% if vehicle.drives.enabled %}
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#drives">Drives</a>
+            </li>
+            {% endif %}
+            {% if vehicle.doors.enabled %}
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#doors">Doors</a>
+            </li>
+            {% endif %}
+            {% if vehicle.windows.enabled %}
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#windows">Windows</a>
+            </li>
+            {% endif %}
+            {% if vehicle.lights.enabled %}
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#lights">Lights</a>
+            </li>
+            {% endif %}
+            {% if vehicle.charging.enabled %}
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#charging">Charging</a>
+            </li>
+            {% endif %}
+            {% if vehicle.climatization.enabled %}
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#climatization">Climatization</a>
+            </li>
+            {% endif %}
+            {% if vehicle.maintenance.enabled %}
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#maintenance">Maintenance</a>
+            </li>
+            {% endif %}
+            {% if vehicle.position.enabled %}
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#position">Position</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+    
+    <div class="card-body tab-content">
+        <!-- Vehicle Tab -->
+        <div class="tab-pane active" id="vehicle">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Attribute</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for child in vehicle.children %}
+                        {% if child.enabled and child.id not in "images,commands,specification,software,doors,windows,lights,drives,charging,climatization,window_heating,maintenance,position" %}
+                        <tr>
+                            <td>{{ child.id }}</td>
+                            <td>{{ child|format_cc_element:"":True:True|safe }}</td>
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Other tabs with similar structure -->
+        {% if vehicle.specification.enabled %}
+        <div class="tab-pane" id="specification">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Attribute</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for child in vehicle.specification.children %}
+                        {% if child.enabled and child.id != "commands" %}
+                        <tr>
+                            <td>{{ child.id }}</td>
+                            <td>{{ child|format_cc_element:"":True:True|safe }}</td>
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+        
+        {% if vehicle.drives.enabled %}
+        <div class="tab-pane" id="drives">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Attribute</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for child in vehicle.drives.children %}
+                        {% if child.enabled and child.id != "commands" %}
+                        <tr>
+                            <td>{{ child.id }}</td>
+                            <td>{{ child|format_cc_element:"":True:True|safe }}</td>
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+        
+        {% if vehicle.position.enabled %}
+        <div class="tab-pane" id="position">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Attribute</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for child in vehicle.position.children %}
+                        {% if child.enabled and child.id != "commands" %}
+                        <tr>
+                            <td>{{ child.id }}</td>
+                            <td>{{ child|format_cc_element:"":True:True|safe }}</td>
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+{% if vehicle.position.enabled %}
+<script>
+    var parkingPosition = L.latLng({{ vehicle.position.latitude.value }}, {{ vehicle.position.longitude.value }});
+    var map = L.map('mapid').setView(parkingPosition, 10);
+    setTimeout(function () { map.flyToBounds([parkingPosition], { animate: true, duration: 1.0 }); }, 300);
+    
+    const osm = new L.TileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors', maxZoom: 19 }
+    );
+    
+    map.addLayer(osm);
+    
+    L.marker([{{ vehicle.position.latitude.value }}, {{ vehicle.position.longitude.value }}]).addTo(map)
+        .bindTooltip('Vehicle Position');
+</script>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static carconnectivity_filters %}
+
+{% block title %}Garage{% endblock %}
+
+{% block header %}Garage{% endblock %}
+
+{% block content %}
+{% if garage.list_vehicles %}
+    <div class="row stagger-children">
+        {% for vehicle in garage.list_vehicles %}
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="vehicle-card" data-href="{% url 'vehicle' vin=vehicle.vin.value %}">
+                    <img src="{% url 'vehicle_img' vin=vehicle.vin.value %}?fallback=icons/car.svg" 
+                         class="vehicle-card-image" 
+                         alt="{{ vehicle.name.value|default:vehicle.id }}"
+                         loading="lazy">
+                    <div class="vehicle-card-body">
+                        <h3 class="vehicle-card-title">
+                            {% if vehicle.name.enabled %}
+                                {{ vehicle.name.value }}
+                            {% else %}
+                                {{ vehicle.id }}
+                            {% endif %}
+                        </h3>
+                        
+                        <div class="vehicle-card-info">
+                            {% if vehicle.model.enabled %}
+                                {{ vehicle.model|format_cc_element:""|safe }}
+                            {% endif %}
+                        </div>
+                        
+                        {% if vehicle.drives.enabled and vehicle.drives.drives %}
+                            <div class="vehicle-card-info">
+                                <img src="{% static 'icons/battery.svg' %}" alt="Battery" style="width: 16px; height: 16px; display: inline; margin-right: 4px;">
+                                Level: 
+                                {% for drive in vehicle.drives.drives.values %}
+                                    {{ drive.level|format_cc_element:""|safe }}{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        
+                        {% if vehicle.drives.total_range.enabled %}
+                            <div class="vehicle-card-info">
+                                <img src="{% static 'icons/location.svg' %}" alt="Range" style="width: 16px; height: 16px; display: inline; margin-right: 4px;">
+                                {{ vehicle.drives.total_range|format_cc_element:"Range"|safe }}
+                            </div>
+                        {% endif %}
+                        
+                        {% if vehicle.odometer.enabled %}
+                            <div class="vehicle-card-info">
+                                Odometer: {{ vehicle.odometer|format_cc_element:""|safe }}
+                            </div>
+                        {% endif %}
+                        
+                        <a href="{% url 'vehicle' vin=vehicle.vin.value %}" class="btn btn-primary" style="width: 100%; margin-top: var(--space-md);">
+                            View Vehicle
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="glass-card text-center" style="padding: var(--space-3xl);">
+        <img src="{% static 'icons/car.svg' %}" alt="No vehicles" style="width: 64px; height: 64px; margin: 0 auto var(--space-lg); opacity: 0.5;">
+        <h3>No vehicles in the garage yet</h3>
+        <p class="text-secondary">You might need to add a connector to see vehicles.</p>
+    </div>
+{% endif %}
+{% endblock %}

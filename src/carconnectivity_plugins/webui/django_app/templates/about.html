@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}About{% endblock %}
+{% block header %}About CarConnectivity{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h3>Version Information</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Component</th>
+                    <th>Version</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for name, version in versions.items %}
+                <tr>
+                    <td>{{ name }}</td>
+                    <td>{{ version }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

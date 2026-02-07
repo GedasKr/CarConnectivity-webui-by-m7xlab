@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Plugins Status{% endblock %}
+{% block header %}Plugins Status{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Plugin ID</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Version</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for plugin in plugins.plugins.values %}
+                <tr>
+                    <td>{{ plugin.id }}</td>
+                    <td>{{ plugin.get_type }}</td>
+                    <td>
+                        {% if plugin.healthy.value %}
+                            <span class="badge badge-success">Healthy</span>
+                        {% else %}
+                            <span class="badge badge-danger">Unhealthy</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ plugin.get_version }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

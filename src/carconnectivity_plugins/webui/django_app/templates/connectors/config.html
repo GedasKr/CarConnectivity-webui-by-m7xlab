@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ connector.id }} Configuration{% endblock %}
+{% block header %}{{ connector.id }} Configuration{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <pre style="background: var(--color-surface-elevated); padding: var(--space-lg); border-radius: var(--border-radius-md); overflow-x: auto;">{{ connector.active_config }}</pre>
+    </div>
+</div>
+{% endblock %}

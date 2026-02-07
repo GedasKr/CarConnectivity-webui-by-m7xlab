@@ -1,0 +1,40 @@
+# Include documentation
+include README.md
+include LICENSE
+include CHANGELOG.md
+include CREDITS.md
+include DJANGO_MIGRATION.md
+include IMPLEMENTATION_SUMMARY.md
+include QUICKSTART.md
+
+# Include configuration files
+include pyproject.toml
+include setup_requirements.txt
+
+# Include all Django templates
+recursive-include src/carconnectivity_plugins/webui/django_app/templates *.html
+
+# Include all static files
+recursive-include src/carconnectivity_plugins/webui/django_app/static *.css *.js *.svg *.png *.jpg *.gif *.woff *.woff2 *.ttf *.eot
+
+# Include Python files
+recursive-include src/carconnectivity_plugins *.py
+
+# Exclude backup and temporary files
+global-exclude *.pyc
+global-exclude *.pyo
+global-exclude __pycache__
+global-exclude .DS_Store
+global-exclude *.swp
+global-exclude *~
+global-exclude .git*
+
+# Exclude old Flask files
+exclude src/carconnectivity_plugins/webui/plugin_flask_backup.py
+recursive-exclude src/carconnectivity_plugins/webui/ui *
+
+# Exclude test files
+recursive-exclude test *
+exclude test_local.sh
+exclude upload_pypi.sh
+exclude .pypirc
