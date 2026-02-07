@@ -14,8 +14,11 @@ include setup_requirements.txt
 # Include all Django templates
 recursive-include src/carconnectivity_plugins/webui/django_app/templates *.html
 
-# Include all static files
-recursive-include src/carconnectivity_plugins/webui/django_app/static *.css *.js *.svg *.png *.jpg *.gif *.woff *.woff2 *.ttf *.eot
+# Include all static files (CRITICAL for package)
+recursive-include src/carconnectivity_plugins/webui/django_app/static *
+
+# Include static file directories even if empty
+graft src/carconnectivity_plugins/webui/django_app/static
 
 # Include Python files
 recursive-include src/carconnectivity_plugins *.py

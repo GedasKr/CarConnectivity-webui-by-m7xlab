@@ -53,6 +53,22 @@ Documentation = "https://github.com/m7xlab/CarConnectivity-plugin-webui/blob/mai
 
 [project.scripts]
 
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"carconnectivity_plugins.webui.django_app" = [
+    "templates/**/*.html",
+    "static/**/*",
+    "static/css/*.css",
+    "static/js/*.js",
+    "static/icons/*.svg",
+    "static/icons/*.png",
+]
+
 [tool.pylint.format]
 max-line-length = 160
 ignore-patterns= "_version.py"

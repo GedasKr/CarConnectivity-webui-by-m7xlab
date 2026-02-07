@@ -1,17 +1,19 @@
 ╔══════════════════════════════════════════════════════════════════╗
 ║                                                                  ║
 ║  🚀 UPLOAD TO PyPI - Quick Commands                             ║
-║  Package: carconnectivity-webui-by-m7xlab v1.0.1               ║
+║  Package: carconnectivity-webui-by-m7xlab v1.0.2               ║
 ║                                                                  ║
 ╚══════════════════════════════════════════════════════════════════╝
 
 ⚠️  IMPORTANT: PyPI doesn't allow version reuse!
-   Version 1.0.0 was already uploaded, so we're using 1.0.1
+   Versions 1.0.0 and 1.0.1 already uploaded, using 1.0.2
 
-✅ FIXES APPLIED:
-   • Static files storage fixed (no more 500 errors)
+✅ FIXES APPLIED (v1.0.2):
+   • Static files serving fixed - removed WhiteNoise complexity
+   • Static files now served directly by Django
    • JSON image endpoint added: /garage/<VIN>-car.png.json/
-   • Version bumped to 1.0.1
+   • Middleware updated to allow static file access
+   • Version bumped to 1.0.2
 
 
 📦 RUN THESE COMMANDS IN YOUR TERMINAL:
@@ -22,7 +24,7 @@ cd "/Users/gediminas.kristopaitis/Documents/Private & Shared/CarConnectivityPlus
 # 1. Clean previous builds
 rm -rf dist/ build/ src/*.egg-info
 
-# 2. Build package (version 1.0.1)
+# 2. Build package (version 1.0.2)
 python3 -m build
 
 # 3. Check package
@@ -36,11 +38,11 @@ python3 -m twine upload dist/* --config-file .pypirc
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 After upload:
-  Uploading carconnectivity_webui_by_m7xlab-1.0.1-py3-none-any.whl
-  Uploading carconnectivity_webui_by_m7xlab-1.0.1.tar.gz
+  Uploading carconnectivity_webui_by_m7xlab-1.0.2-py3-none-any.whl
+  Uploading carconnectivity_webui_by_m7xlab-1.0.2.tar.gz
   
   View at:
-  https://pypi.org/project/carconnectivity-webui-by-m7xlab/1.0.1/
+  https://pypi.org/project/carconnectivity-webui-by-m7xlab/1.0.2/
 
 
 ✅ WHAT'S FIXED:

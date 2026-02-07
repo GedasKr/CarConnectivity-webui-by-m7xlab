@@ -82,17 +82,15 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
+
+# Static files are in the django_app/static directory
+import os
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',
+    os.path.join(BASE_DIR, 'static'),
 ]
 
-# Don't use STATIC_ROOT - serve directly from STATICFILES_DIRS
-# This is simpler for a plugin that doesn't need collectstatic
+# For serving static files in production without collectstatic
 STATIC_ROOT = None
-
-# Disable WhiteNoise storage backend - use default for simpler deployment
-# Static files will be served directly by Django in development
-# For production, WhiteNoise middleware will handle compression
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
@@ -105,6 +103,9 @@ CSRF_COOKIE_SAMESITE = 'Lax'
 # Security settings
 SECURE_BROWSER_XSS_FILTER = True
 X_FRAME_OPTIONS = 'DENY'
+
+# Disable APPEND_SLASH to prevent 301 redirects on URLs without trailing slash
+APPEND_SLASH = False
 
 # Logging configuration
 LOGGING = {
