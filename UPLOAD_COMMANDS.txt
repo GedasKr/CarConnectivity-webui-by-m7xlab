@@ -1,10 +1,12 @@
-# Upload Commands for carconnectivity-webui-by-m7xlab v1.0.7
+# Upload Commands for carconnectivity-webui-by-m7xlab v1.0.8
 # ================================================================
 
-# CRITICAL FIX IN v1.0.7:
-# - Fixed static file serving to work in production (DEBUG=False)
-# - Changed from static() helper to direct serve view
-# - Static files now work regardless of DEBUG setting
+# CRITICAL FIXES IN v1.0.8:
+# - Added CSRF_TRUSTED_ORIGINS support from plugin config
+# - Added ALLOWED_HOSTS support from plugin config
+# - Added SESSION_COOKIE_SECURE and CSRF_COOKIE_SECURE support
+# - Fixed DEBUG setting to read from plugin config
+# - Fixed static file serving (v1.0.7)
 
 cd "/Users/gediminas.kristopaitis/Documents/Private & Shared/CarConnectivityPlus/CarConnectivity-plugin-webui"
 
@@ -26,26 +28,46 @@ pip install --no-cache-dir carconnectivity-webui-by-m7xlab
 # Restart application
 
 # ================================================================
-# WHAT WAS THE PROBLEM:
+# CONFIGURATION EXAMPLE:
 # ================================================================
-# The diagnostic commands showed:
-# - Static files ARE in the package ✓
-# - Static directory exists ✓
-# - Django settings are correct ✓
-# 
-# BUT: Django's static() helper only serves files when DEBUG=True
-# Since DEBUG=False in production, static files returned 404.
+# Your config in carconnectivity.json:
+# {
+#     "type": "webui",
+#     "config": {
+#         "host": "0.0.0.0",
+#         "port": 8081,
+#         "username": "admin",
+#         "password": "***",
+#         "csrf_trusted_origins": ["https://cars.m7xlab.top"],
+#         "allowed_hosts": ["cars.m7xlab.top", "localhost", "carconnectivity"],
+#         "debug": true,
+#         "session_cookie_secure": true,
+#         "csrf_cookie_secure": true
+#     }
+# }
 #
-# FIX: Changed urls.py to use django.views.static.serve directly
-# with an explicit URL pattern. This works regardless of DEBUG setting.
+# These settings are now properly read by Django!
+#
+# ================================================================
+# WHAT WAS FIXED:
+# ================================================================
+# v1.0.8:
+# - settings.py now reads from get_plugin_config()
+# - CSRF_TRUSTED_ORIGINS = config['csrf_trusted_origins']
+# - ALLOWED_HOSTS = config['allowed_hosts']
+# - DEBUG = config['debug']
+# - SESSION_COOKIE_SECURE = config['session_cookie_secure']
+# - CSRF_COOKIE_SECURE = config['csrf_cookie_secure']
+#
+# v1.0.7:
+# - Static files now served in production (DEBUG=False)
 #
 # ================================================================
 # EXPECTED RESULTS:
 # ================================================================
-# After v1.0.7:
-# - GET /static/css/apple-design-system.css → 200 OK ✓
-# - GET /static/js/main.js → 200 OK ✓
-# - GET /static/icons/*.svg → 200 OK ✓
-# - Login page shows Apple-inspired design ✓
+# After v1.0.8:
+# - Login at https://cars.m7xlab.top/ works without CSRF error ✓
+# - Static files load (Apple-inspired design) ✓
+# - Secure cookies work over HTTPS ✓
 #
 # ================================================================
