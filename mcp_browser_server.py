@@ -54,7 +54,7 @@ async def handle_list_tools() -> list[types.Tool]:
                 "properties": {
                     "url": {
                         "type": "string",
-                        "description": "URL to navigate to (e.g., https://cars.m7xlab.top/)"
+                        "description": "URL to navigate to (e.g., http://localhost:8080/)"
                     },
                     "wait_for": {
                         "type": "string",
